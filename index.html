@@ -2500,6 +2500,15 @@
             </div>
         </div>
 
+        <!-- QR Code Modal -->
+        <div class="modal-overlay" id="qr-modal">
+            <div class="modal-box" style="text-align: center; max-width: 360px;">
+                <button class="modal-close" id="qr-close-btn">&times;</button>
+                <h2 class="modal-title" style="margin-bottom: 1.5rem;">Scan to meet Clare</h2>
+                <img src="./qrcode.png" alt="QR Code" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1);" />
+            </div>
+        </div>
+
         <script>
             const starsContainer = document.getElementById("stars");
             for (let i = 0; i < 120; i++) {
@@ -2590,6 +2599,38 @@
                     link.addEventListener("click", () => {
                         closeModal();
                     });
+                }
+            });
+
+            // QR Code Modal Setup
+            const qrModal = document.getElementById("qr-modal");
+            const qrCloseBtn = document.getElementById("qr-close-btn");
+
+            const toggleQrModal = () => {
+                if (qrModal) qrModal.classList.toggle("active");
+            };
+            const closeQrModal = () => {
+                if (qrModal) qrModal.classList.remove("active");
+            };
+
+            if (qrCloseBtn) {
+                qrCloseBtn.addEventListener("click", closeQrModal);
+            }
+            if (qrModal) {
+                qrModal.addEventListener("click", (e) => {
+                    if (e.target === qrModal) closeQrModal();
+                });
+            }
+
+            document.addEventListener("keydown", (e) => {
+                // Ignore if user is typing
+                if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+                
+                if (e.key.toLowerCase() === "q") {
+                    toggleQrModal();
+                } else if (e.key === "Escape") {
+                    closeQrModal();
+                    if (typeof closeModal === 'function') closeModal();
                 }
             });
         </script>
