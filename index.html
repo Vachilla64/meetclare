@@ -361,6 +361,52 @@
             .btn-ghost:hover {
                 background: rgba(107, 70, 193, 0.3);
             }
+            .windows-download-wrapper {
+                margin-top: 1.5rem;
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+            .windows-download-btn {
+                display: inline-flex;
+                align-items: center;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 100px;
+                padding: 0.6rem;
+                color: white;
+                text-decoration: none;
+                overflow: hidden;
+                max-width: 44px;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                white-space: nowrap;
+                box-sizing: border-box;
+            }
+            .windows-download-btn:hover {
+                max-width: 280px;
+                background: rgba(0, 120, 212, 0.15);
+                border-color: rgba(0, 120, 212, 0.4);
+                box-shadow: 0 0 20px rgba(0, 120, 212, 0.4);
+            }
+            .windows-icon {
+                width: 24px;
+                height: 24px;
+                flex-shrink: 0;
+                fill: currentColor;
+            }
+            .windows-text {
+                font-weight: 600;
+                margin-left: 12px;
+                margin-right: 12px;
+                opacity: 0;
+                transform: translateX(-10px);
+                transition: all 0.3s ease;
+            }
+            .windows-download-btn:hover .windows-text {
+                opacity: 1;
+                transform: translateX(0);
+                transition-delay: 0.1s;
+            }
             .hero-chat {
                 background: rgba(22, 13, 46, 0.8);
                 border: 1px solid rgba(107, 70, 193, 0.3);
@@ -1075,7 +1121,9 @@
             .modal-box {
                 background: rgba(22, 13, 46, 0.95);
                 border: 1px solid rgba(167, 139, 250, 0.2);
-                box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+                box-shadow:
+                    0 24px 60px rgba(0, 0, 0, 0.6),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
                 border-radius: 24px;
                 padding: 2.5rem 2rem;
                 max-width: 480px;
@@ -1184,12 +1232,20 @@
                 color: rgba(255, 255, 255, 0.85);
             }
             .modal-option-btn.accent-bot {
-                background: linear-gradient(135deg, var(--purple-700) 0%, var(--purple-600) 100%);
+                background: linear-gradient(
+                    135deg,
+                    var(--purple-700) 0%,
+                    var(--purple-600) 100%
+                );
                 border: 1px solid rgba(167, 139, 250, 0.3);
                 box-shadow: 0 4px 20px rgba(107, 70, 193, 0.2);
             }
             .modal-option-btn.accent-bot:hover {
-                background: linear-gradient(135deg, var(--purple-600) 0%, var(--purple-500) 100%);
+                background: linear-gradient(
+                    135deg,
+                    var(--purple-600) 0%,
+                    var(--purple-500) 100%
+                );
                 box-shadow: 0 6px 24px rgba(107, 70, 193, 0.4);
                 border-color: rgba(167, 139, 250, 0.5);
             }
@@ -1300,16 +1356,24 @@
                         target="_blank"
                         class="btn btn-slack"
                     >
-                        <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                        >
+                        <svg width="18" height="18" viewBox="0 0 24 24">
                             <g fill="none" fill-rule="evenodd">
-                                <path d="M5.04 15.171a2.524 2.524 0 0 1-2.52 2.52 2.524 2.524 0 0 1-2.52-2.52 2.524 2.524 0 0 1 2.52-2.52h2.52v2.52zM6.3 15.171a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52H8.82a2.524 2.524 0 0 1-2.52-2.52v-5.04z" fill="#36C5F0"/>
-                                <path d="M8.82 5.04A2.524 2.524 0 0 1 11.34 2.52a2.524 2.524 0 0 1 2.52 2.52v2.52H11.34A2.524 2.524 0 0 1 8.82 5.04zm0 1.26a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52H3.78a2.524 2.524 0 0 1-2.52-2.52V8.82A2.524 2.524 0 0 1 6.3 6.3h2.52z" fill="#2EB67D"/>
-                                <path d="M18.96 8.829a2.524 2.524 0 0 1 2.52-2.52 2.524 2.524 0 0 1 2.52 2.52 2.524 2.524 0 0 1-2.52 2.52h-2.52v-2.52zm-1.26 0a2.524 2.524 0 0 1-2.52 2.52h-5.04a2.524 2.524 0 0 1-2.52-2.52V3.78a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04z" fill="#ECB22E"/>
-                                <path d="M15.18 18.96a2.524 2.524 0 0 1-2.52 2.52 2.524 2.524 0 0 1-2.52-2.52v-2.52h2.52a2.524 2.524 0 0 1 2.52 2.52zm0-1.26a2.524 2.524 0 0 1-2.52-2.52v-5.04a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52h-5.04z" fill="#E01E5A"/>
+                                <path
+                                    d="M5.04 15.171a2.524 2.524 0 0 1-2.52 2.52 2.524 2.524 0 0 1-2.52-2.52 2.524 2.524 0 0 1 2.52-2.52h2.52v2.52zM6.3 15.171a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52H8.82a2.524 2.524 0 0 1-2.52-2.52v-5.04z"
+                                    fill="#36C5F0"
+                                />
+                                <path
+                                    d="M8.82 5.04A2.524 2.524 0 0 1 11.34 2.52a2.524 2.524 0 0 1 2.52 2.52v2.52H11.34A2.524 2.524 0 0 1 8.82 5.04zm0 1.26a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52H3.78a2.524 2.524 0 0 1-2.52-2.52V8.82A2.524 2.524 0 0 1 6.3 6.3h2.52z"
+                                    fill="#2EB67D"
+                                />
+                                <path
+                                    d="M18.96 8.829a2.524 2.524 0 0 1 2.52-2.52 2.524 2.524 0 0 1 2.52 2.52 2.524 2.524 0 0 1-2.52 2.52h-2.52v-2.52zm-1.26 0a2.524 2.524 0 0 1-2.52 2.52h-5.04a2.524 2.524 0 0 1-2.52-2.52V3.78a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04z"
+                                    fill="#ECB22E"
+                                />
+                                <path
+                                    d="M15.18 18.96a2.524 2.524 0 0 1-2.52 2.52 2.524 2.524 0 0 1-2.52-2.52v-2.52h2.52a2.524 2.524 0 0 1 2.52 2.52zm0-1.26a2.524 2.524 0 0 1-2.52-2.52v-5.04a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52h-5.04z"
+                                    fill="#E01E5A"
+                                />
                             </g>
                         </svg>
                         Chat on Slack
@@ -1330,6 +1394,24 @@
                             />
                         </svg>
                         View on GitHub
+                    </a>
+                </div>
+                <div class="windows-download-wrapper reveal">
+                    <a
+                        href="https://github.com/Vachilla64/ClareTops/releases/latest/download/clare.exe"
+                        download="clare.exe"
+                        class="windows-download-btn"
+                    >
+                        <svg
+                            class="windows-icon"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M0 3.449L9.75 2.1v9.181H0V3.45zm10.95-1.57L24 0v11.04H10.95V1.88zm0 10.33H24V24l-13.05-1.83V12.21zm-1.2 1.01H0v7.62l9.75-1.34V13.22z"
+                            />
+                        </svg>
+                        <span class="windows-text">Download for Windows</span>
                     </a>
                 </div>
 
@@ -2278,31 +2360,63 @@
                             <div class="gateway-card-icon">
                                 <svg width="40" height="40" viewBox="0 0 24 24">
                                     <g fill="none" fill-rule="evenodd">
-                                        <path d="M5.04 15.171a2.524 2.524 0 0 1-2.52 2.52 2.524 2.524 0 0 1-2.52-2.52 2.524 2.524 0 0 1 2.52-2.52h2.52v2.52zM6.3 15.171a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52H8.82a2.524 2.524 0 0 1-2.52-2.52v-5.04z" fill="#36C5F0"/>
-                                        <path d="M8.82 5.04A2.524 2.524 0 0 1 11.34 2.52a2.524 2.524 0 0 1 2.52 2.52v2.52H11.34A2.524 2.524 0 0 1 8.82 5.04zm0 1.26a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52H3.78a2.524 2.524 0 0 1-2.52-2.52V8.82A2.524 2.524 0 0 1 6.3 6.3h2.52z" fill="#2EB67D"/>
-                                        <path d="M18.96 8.829a2.524 2.524 0 0 1 2.52-2.52 2.524 2.524 0 0 1 2.52 2.52 2.524 2.524 0 0 1-2.52 2.52h-2.52v-2.52zm-1.26 0a2.524 2.524 0 0 1-2.52 2.52h-5.04a2.524 2.524 0 0 1-2.52-2.52V3.78a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04z" fill="#ECB22E"/>
-                                        <path d="M15.18 18.96a2.524 2.524 0 0 1-2.52 2.52 2.524 2.524 0 0 1-2.52-2.52v-2.52h2.52a2.524 2.524 0 0 1 2.52 2.52zm0-1.26a2.524 2.524 0 0 1-2.52-2.52v-5.04a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52h-5.04z" fill="#E01E5A"/>
+                                        <path
+                                            d="M5.04 15.171a2.524 2.524 0 0 1-2.52 2.52 2.524 2.524 0 0 1-2.52-2.52 2.524 2.524 0 0 1 2.52-2.52h2.52v2.52zM6.3 15.171a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52H8.82a2.524 2.524 0 0 1-2.52-2.52v-5.04z"
+                                            fill="#36C5F0"
+                                        />
+                                        <path
+                                            d="M8.82 5.04A2.524 2.524 0 0 1 11.34 2.52a2.524 2.524 0 0 1 2.52 2.52v2.52H11.34A2.524 2.524 0 0 1 8.82 5.04zm0 1.26a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52H3.78a2.524 2.524 0 0 1-2.52-2.52V8.82A2.524 2.524 0 0 1 6.3 6.3h2.52z"
+                                            fill="#2EB67D"
+                                        />
+                                        <path
+                                            d="M18.96 8.829a2.524 2.524 0 0 1 2.52-2.52 2.524 2.524 0 0 1 2.52 2.52 2.524 2.524 0 0 1-2.52 2.52h-2.52v-2.52zm-1.26 0a2.524 2.524 0 0 1-2.52 2.52h-5.04a2.524 2.524 0 0 1-2.52-2.52V3.78a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04z"
+                                            fill="#ECB22E"
+                                        />
+                                        <path
+                                            d="M15.18 18.96a2.524 2.524 0 0 1-2.52 2.52 2.524 2.524 0 0 1-2.52-2.52v-2.52h2.52a2.524 2.524 0 0 1 2.52 2.52zm0-1.26a2.524 2.524 0 0 1-2.52-2.52v-5.04a2.524 2.524 0 0 1 2.52-2.52h5.04a2.524 2.524 0 0 1 2.52 2.52v5.04a2.524 2.524 0 0 1-2.52 2.52h-5.04z"
+                                            fill="#E01E5A"
+                                        />
                                     </g>
                                 </svg>
                             </div>
                             <h3>Clare on Slack</h3>
                             <p>
-                                Add Clare to your workspace and interact directly
-                                from your DMs or team channels. Ideal for work updates.
+                                Add Clare to your workspace and interact
+                                directly from your DMs or team channels. Ideal
+                                for work updates.
                             </p>
                             <span class="gateway-cta">Add to Workspace</span>
                         </a>
-                        <div class="gateway-card telegram reveal" style="position: relative;">
+                        <div
+                            class="gateway-card telegram reveal"
+                            style="position: relative"
+                        >
                             <div class="gateway-card-icon">
-                                <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
-                                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.216-3.13 5.568-5.025c.24-.21-.054-.326-.375-.11L7.373 13.5l-3.036-.948c-.66-.208-.673-.66.138-.977l11.869-4.572c.548-.204 1.025.127.876.994z"/>
+                                <svg
+                                    width="40"
+                                    height="40"
+                                    viewBox="0 0 24 24"
+                                    fill="white"
+                                >
+                                    <path
+                                        d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.216-3.13 5.568-5.025c.24-.21-.054-.326-.375-.11L7.373 13.5l-3.036-.948c-.66-.208-.673-.66.138-.977l11.869-4.572c.548-.204 1.025.127.876.994z"
+                                    />
                                 </svg>
                             </div>
                             <h3>Clare on Telegram</h3>
                             <p>
-                                Stay tuned. Fast, encrypted, and directly in your Telegram chats.
+                                Stay tuned. Fast, encrypted, and directly in
+                                your Telegram chats.
                             </p>
-                            <span class="gateway-cta" style="border: 1px dashed rgba(255,255,255,0.4); color: rgba(255,255,255,0.8); background: none;">Work in Progress</span>
+                            <span
+                                class="gateway-cta"
+                                style="
+                                    border: 1px dashed rgba(255, 255, 255, 0.4);
+                                    color: rgba(255, 255, 255, 0.8);
+                                    background: none;
+                                "
+                                >Work in Progress</span
+                            >
                         </div>
                     </div>
                 </div>
@@ -2336,24 +2450,51 @@
         <!-- Discord Selection Modal -->
         <div class="modal-overlay" id="discord-modal">
             <div class="modal-box">
-                <button class="modal-close" id="modal-close-btn">&times;</button>
+                <button class="modal-close" id="modal-close-btn">
+                    &times;
+                </button>
                 <div class="modal-header">
                     <div class="modal-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+                        <svg
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"
+                            />
                         </svg>
                     </div>
                     <h2 class="modal-title">Clare on Discord</h2>
-                    <p class="modal-desc">Select how you want to interact with Clare on Discord:</p>
+                    <p class="modal-desc">
+                        Select how you want to interact with Clare on Discord:
+                    </p>
                 </div>
                 <div class="modal-options">
-                    <a href="https://discord.gg/vkXWZ2fAQ" target="_blank" class="modal-option-btn primary-discord" id="modal-chat-link">
+                    <a
+                        href="https://discord.gg/vkXWZ2fAQ"
+                        target="_blank"
+                        class="modal-option-btn primary-discord"
+                        id="modal-chat-link"
+                    >
                         <div class="modal-option-title">Chat on Discord</div>
-                        <div class="modal-option-desc">Join the community server and interact with Clare there</div>
+                        <div class="modal-option-desc">
+                            Join the community server and interact with Clare
+                            there
+                        </div>
                     </a>
-                    <a href="https://discord.com/oauth2/authorize?client_id=1509967801291509781&permissions=8&integration_type=0&scope=bot" target="_blank" class="modal-option-btn accent-bot" id="modal-add-link">
+                    <a
+                        href="https://discord.com/oauth2/authorize?client_id=1509967801291509781&permissions=8&integration_type=0&scope=bot"
+                        target="_blank"
+                        class="modal-option-btn accent-bot"
+                        id="modal-add-link"
+                    >
                         <div class="modal-option-title">Add to your Server</div>
-                        <div class="modal-option-desc">Authorize and add Clare to a Discord server you manage</div>
+                        <div class="modal-option-desc">
+                            Authorize and add Clare to a Discord server you
+                            manage
+                        </div>
                     </a>
                 </div>
             </div>
@@ -2444,7 +2585,7 @@
                 });
             }
 
-            [modalChatLink, modalAddLink].forEach(link => {
+            [modalChatLink, modalAddLink].forEach((link) => {
                 if (link) {
                     link.addEventListener("click", () => {
                         closeModal();
