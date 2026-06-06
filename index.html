@@ -1,1012 +1,2148 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clare | Your new favorite work bestie</title>
-  <link rel="icon" type="image/png" href="./Clare-transparent-background.png" />
-  <link rel="apple-touch-icon" href="./Clare-transparent-background.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --purple-950: #0d0618;
-      --purple-900: #160d2e;
-      --purple-800: #2d1a5e;
-      --purple-700: #4a2d96;
-      --purple-600: #6B46C1;
-      --purple-500: #7c3aed;
-      --purple-400: #a78bfa;
-      --purple-300: #c4b5fd;
-      --purple-200: #ddd6fe;
-      --purple-100: #ede9fe;
-      --accent-pink: #f472b6;
-      --accent-cyan: #22d3ee;
-      --accent-amber: #fbbf24;
-      --text-primary: #f5f0ff;
-      --text-secondary: #c4b5fd;
-      --text-muted: #7c6fa0;
-      --font-display: 'Syne', sans-serif;
-      --font-body: 'DM Sans', sans-serif;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--font-body);
-      background: var(--purple-950);
-      color: var(--text-primary);
-      overflow-x: hidden;
-      cursor: default;
-    }
-
-    /* ── NOISE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 1000; opacity: 0.4;
-    }
-
-    /* ── PARALLAX BACKGROUND ── */
-    .parallax-bg {
-      position: fixed; inset: 0; z-index: 0;
-      overflow: hidden;
-    }
-    .bg-image-layer {
-      position: absolute;
-      top: -15vh; left: -5vw; right: -5vw; bottom: -15vh;
-      background-image: url('Gemini_Generated_Image_vyvnfvyvnfvyvnfv.png');
-      background-size: cover;
-      background-position: center;
-      opacity: 0.10;
-      mix-blend-mode: screen;
-      filter: saturate(1.1);
-      z-index: 1;
-      will-change: transform;
-      pointer-events: none;
-    }
-
-    .orb {
-      position: absolute; border-radius: 50%;
-      filter: blur(80px); opacity: 0.25;
-      animation: drift linear infinite;
-      will-change: transform;
-    }
-    .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, #6B46C1, transparent); top: -200px; left: -150px; animation-duration: 25s; }
-    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, #7c3aed, transparent); top: 40%; right: -200px; animation-duration: 30s; animation-delay: -8s; }
-    .orb-3 { width: 400px; height: 400px; background: radial-gradient(circle, #f472b6, transparent); bottom: -100px; left: 30%; animation-duration: 20s; animation-delay: -4s; opacity: 0.12; }
-    .orb-4 { width: 300px; height: 300px; background: radial-gradient(circle, #22d3ee, transparent); top: 60%; left: 10%; animation-duration: 35s; animation-delay: -15s; opacity: 0.1; }
-
-    @keyframes drift {
-      0%   { transform: translate(0, 0) scale(1); }
-      33%  { transform: translate(40px, -30px) scale(1.05); }
-      66%  { transform: translate(-20px, 20px) scale(0.97); }
-      100% { transform: translate(0, 0) scale(1); }
-    }
-
-    /* ── STAR FIELD ── */
-    .stars { position: fixed; inset: 0; z-index: 0; }
-    .star {
-      position: absolute; background: white; border-radius: 50%;
-      animation: twinkle ease-in-out infinite;
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.3); }
-    }
-
-    /* ── LAYOUT ── */
-    .page { position: relative; z-index: 10; }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 1.25rem 2rem;
-      display: flex; align-items: center; justify-content: space-between;
-      backdrop-filter: blur(20px);
-      background: rgba(13, 6, 24, 0.6);
-      border-bottom: 1px solid rgba(107, 70, 193, 0.15);
-    }
-    .nav-logo {
-      font-family: var(--font-display);
-      font-weight: 800; font-size: 1.5rem;
-      letter-spacing: -0.02em;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .nav-logo-text {
-      color: #ffffff;
-      transition: color 0.2s;
-    }
-    .nav-logo:hover .nav-logo-text {
-      color: var(--purple-300);
-    }
-    .nav-links { display: flex; gap: 2rem; align-items: center; }
-    .nav-links a {
-      color: var(--text-secondary); text-decoration: none;
-      font-size: 0.9rem; font-weight: 500;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text-primary); }
-    .nav-cta {
-      background: var(--purple-600) !important;
-      color: white !important;
-      padding: 0.5rem 1.25rem;
-      border-radius: 100px;
-      transition: background 0.2s, transform 0.2s !important;
-    }
-    .nav-cta:hover { background: var(--purple-500) !important; transform: translateY(-1px); }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: 8rem 2rem 5rem;
-      position: relative;
-    }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(107, 70, 193, 0.2);
-      border: 1px solid rgba(167, 139, 250, 0.3);
-      border-radius: 100px;
-      padding: 0.4rem 1rem;
-      font-size: 0.8rem; font-weight: 500;
-      color: var(--purple-300);
-      margin-bottom: 2rem;
-      animation: fadeSlideDown 0.8s ease both;
-    }
-    .hero-badge-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent-pink);
-      animation: pulse 2s ease infinite;
-    }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
-    .hero-headline {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 5vw, 4.5rem);
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: -0.04em;
-      margin-bottom: 1.5rem;
-      animation: fadeSlideDown 0.9s ease 0.1s both;
-    }
-    .hero-headline .line-1 { display: block; color: var(--text-primary); }
-    .hero-headline .line-2 {
-      display: block;
-      background: linear-gradient(135deg, #a78bfa 0%, #f472b6 50%, #22d3ee 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      color: var(--text-secondary);
-      font-weight: 300;
-      max-width: 580px;
-      line-height: 1.7;
-      margin-bottom: 3rem;
-      animation: fadeSlideDown 1s ease 0.2s both;
-    }
-    .hero-sub em { color: var(--purple-300); font-style: normal; font-weight: 500; }
-
-    .hero-ctas {
-      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
-      margin-bottom: 4rem;
-      animation: fadeSlideDown 1s ease 0.3s both;
-    }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      padding: 0.85rem 1.75rem;
-      border-radius: 100px;
-      font-family: var(--font-body);
-      font-size: 0.95rem; font-weight: 500;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer; border: none;
-    }
-    .btn:hover { transform: translateY(-2px); }
-    .btn-discord {
-      background: #5865F2;
-      color: white;
-      box-shadow: 0 4px 24px rgba(88, 101, 242, 0.4);
-    }
-    .btn-discord:hover { box-shadow: 0 8px 32px rgba(88, 101, 242, 0.6); }
-    .btn-whatsapp {
-      background: #25D366;
-      color: white;
-      box-shadow: 0 4px 24px rgba(37, 211, 102, 0.3);
-    }
-    .btn-whatsapp:hover { box-shadow: 0 8px 32px rgba(37, 211, 102, 0.5); }
-    .btn-ghost {
-      background: rgba(107, 70, 193, 0.15);
-      border: 1px solid rgba(167, 139, 250, 0.3);
-      color: var(--purple-300);
-    }
-    .btn-ghost:hover { background: rgba(107, 70, 193, 0.3); }
-
-    /* chat mockup */
-    .hero-chat {
-      background: rgba(22, 13, 46, 0.8);
-      border: 1px solid rgba(107, 70, 193, 0.3);
-      border-radius: 20px;
-      padding: 1.5rem;
-      max-width: 480px; width: 100%;
-      backdrop-filter: blur(20px);
-      text-align: left;
-      animation: fadeSlideDown 1s ease 0.4s both;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-    .chat-header {
-      display: flex; align-items: center; gap: 0.75rem;
-      margin-bottom: 1.25rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(107, 70, 193, 0.2);
-    }
-    .chat-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple-600), var(--accent-pink));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; font-weight: 700; color: white;
-      font-family: var(--font-display);
-    }
-    .chat-name { font-weight: 600; font-size: 0.9rem; }
-    .chat-status { font-size: 0.75rem; color: #22d3ee; display: flex; align-items: center; gap: 0.3rem; }
-    .chat-status::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #22d3ee; animation: pulse 2s infinite; }
-
-    .chat-msg { margin-bottom: 0.75rem; font-size: 0.85rem; line-height: 1.5; }
-    .chat-msg.user { text-align: right; }
-    .chat-msg.user span {
-      background: var(--purple-700);
-      color: var(--purple-100);
-      padding: 0.5rem 0.85rem;
-      border-radius: 16px 16px 4px 16px;
-      display: inline-block;
-    }
-    .chat-msg.clare span {
-      background: rgba(107, 70, 193, 0.2);
-      border: 1px solid rgba(167, 139, 250, 0.2);
-      color: var(--text-primary);
-      padding: 0.5rem 0.85rem;
-      border-radius: 4px 16px 16px 16px;
-      display: inline-block;
-    }
-    .chat-msg .tag {
-      font-size: 0.7rem; color: var(--text-muted);
-      margin-bottom: 0.25rem;
-    }
-
-    .chat-sql {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(107, 70, 193, 0.2);
-      border-radius: 8px;
-      padding: 0.5rem 0.75rem;
-      font-family: 'Courier New', monospace;
-      font-size: 0.72rem;
-      color: #a78bfa;
-      margin-top: 0.5rem;
-    }
-
-    @keyframes fadeSlideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── SECTION BASE ── */
-    section { padding: 6rem 2rem; }
-    .section-inner { max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      font-family: var(--font-display);
-      font-size: 0.75rem; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--purple-400);
-      margin-bottom: 1rem;
-    }
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.25rem;
-    }
-    .section-sub {
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-      font-weight: 300;
-      line-height: 1.7;
-      max-width: 560px;
-    }
-
-    /* ── HOW CLARE WORKS ── */
-    .how { background: rgba(22, 13, 46, 0.5); border-top: 1px solid rgba(107, 70, 193, 0.15); border-bottom: 1px solid rgba(107, 70, 193, 0.15); }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 2rem; margin-top: 3.5rem;
-    }
-    .step {
-      padding: 2rem;
-      background: rgba(45, 26, 94, 0.4);
-      border: 1px solid rgba(107, 70, 193, 0.2);
-      border-radius: 16px;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .step:hover { border-color: rgba(167, 139, 250, 0.5); transform: translateY(-4px); }
-    .step-num {
-      font-family: var(--font-display);
-      font-size: 2.5rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--purple-400), var(--accent-pink));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 1rem; line-height: 1;
-    }
-    .step h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .step p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
-
-    /* ── FEATURES / POWERS ── */
-    .powers-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-top: 3.5rem;
-    }
-    .power-card {
-      padding: 1.75rem;
-      background: rgba(45, 26, 94, 0.3);
-      border: 1px solid rgba(107, 70, 193, 0.2);
-      border-radius: 16px;
-      transition: all 0.3s;
-      position: relative; overflow: hidden;
-    }
-    .power-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--purple-400), transparent);
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .power-card:hover { border-color: rgba(167, 139, 250, 0.4); transform: translateY(-3px); }
-    .power-card:hover::before { opacity: 1; }
-    .power-icon { font-size: 2rem; margin-bottom: 1rem; }
-    .power-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
-    .power-card p { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; }
-    .power-tag {
-      display: inline-block;
-      background: rgba(107, 70, 193, 0.3);
-      border: 1px solid rgba(167, 139, 250, 0.3);
-      border-radius: 4px;
-      font-size: 0.7rem; color: var(--purple-300);
-      padding: 0.15rem 0.5rem;
-      margin-top: 0.75rem; font-family: monospace;
-    }
-
-    /* ── CORAL SECTION ── */
-    .coral-section {
-      background: rgba(13, 6, 24, 0.8);
-      border-top: 1px solid rgba(107, 70, 193, 0.15);
-    }
-    .coral-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-      margin-top: 3rem;
-    }
-    .coral-code-block {
-      background: rgba(0,0,0,0.6);
-      border: 1px solid rgba(107, 70, 193, 0.3);
-      border-radius: 16px;
-      padding: 1.5rem;
-      font-family: 'Courier New', monospace;
-      font-size: 0.82rem;
-      line-height: 1.8;
-      overflow-x: auto;
-    }
-    .coral-code-block .comment { color: var(--text-muted); }
-    .coral-code-block .keyword { color: #f472b6; }
-    .coral-code-block .table { color: #22d3ee; }
-    .coral-code-block .string { color: #fbbf24; }
-    .coral-code-block .fn { color: #a78bfa; }
-
-    .coral-features { display: flex; flex-direction: column; gap: 1rem; }
-    .coral-feature {
-      display: flex; gap: 1rem; align-items: flex-start;
-      padding: 1rem;
-      border-radius: 12px;
-      border: 1px solid rgba(107, 70, 193, 0.15);
-      transition: border-color 0.2s;
-    }
-    .coral-feature:hover { border-color: rgba(167, 139, 250, 0.35); }
-    .coral-check { color: #22d3ee; font-size: 1.1rem; margin-top: 0.1rem; flex-shrink: 0; }
-    .coral-feature h4 { font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
-    .coral-feature p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
-
-    /* ── ROADMAP ── */
-    .roadmap { background: rgba(22, 13, 46, 0.4); border-top: 1px solid rgba(107, 70, 193, 0.15); }
-
-    .roadmap-intro {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(251, 191, 36, 0.1);
-      border: 1px solid rgba(251, 191, 36, 0.3);
-      border-radius: 100px;
-      padding: 0.4rem 1rem;
-      font-size: 0.8rem; color: var(--accent-amber);
-      margin-bottom: 2rem;
-    }
-
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.25rem;
-      margin-top: 3rem;
-    }
-    .roadmap-card {
-      padding: 1.5rem;
-      border-radius: 16px;
-      border: 1px dashed rgba(107, 70, 193, 0.3);
-      background: rgba(45, 26, 94, 0.2);
-      transition: all 0.3s;
-      position: relative;
-    }
-    .roadmap-card::after {
-      content: 'SOON';
-      position: absolute; top: 1rem; right: 1rem;
-      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em;
-      color: var(--accent-amber); font-family: var(--font-display);
-      background: rgba(251,191,36,0.1);
-      border: 1px solid rgba(251,191,36,0.25);
-      padding: 0.15rem 0.4rem; border-radius: 4px;
-    }
-    .roadmap-card.channels::after { content: 'SOON'; }
-    .roadmap-card:hover { border-color: rgba(167, 139, 250, 0.4); background: rgba(45, 26, 94, 0.4); }
-    .roadmap-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
-    .roadmap-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.4rem; }
-    .roadmap-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
-
-    .roadmap-divider {
-      text-align: center;
-      margin: 3rem 0 1rem;
-      font-family: var(--font-display);
-      font-size: 0.75rem; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--text-muted);
-      position: relative;
-    }
-    .roadmap-divider::before, .roadmap-divider::after {
-      content: '';
-      position: absolute; top: 50%;
-      width: 35%; height: 1px;
-      background: rgba(107, 70, 193, 0.2);
-    }
-    .roadmap-divider::before { left: 0; }
-    .roadmap-divider::after { right: 0; }
-
-    /* ── GATEWAY ── */
-    .gateway {
-      text-align: center;
-      border-top: 1px solid rgba(107, 70, 193, 0.15);
-    }
-    .gateway-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-    .gateway-card {
-      padding: 2.5rem 2rem;
-      border-radius: 24px;
-      text-decoration: none;
-      color: white;
-      transition: transform 0.3s, box-shadow 0.3s;
-      display: flex; flex-direction: column; align-items: center; gap: 1rem;
-    }
-    .gateway-card:hover { transform: translateY(-6px); }
-    .gateway-card.discord {
-      background: linear-gradient(135deg, #5865F2, #4752c4);
-      box-shadow: 0 8px 40px rgba(88, 101, 242, 0.3);
-    }
-    .gateway-card.discord:hover { box-shadow: 0 16px 60px rgba(88, 101, 242, 0.5); }
-    .gateway-card.whatsapp {
-      background: linear-gradient(135deg, #25D366, #128C7E);
-      box-shadow: 0 8px 40px rgba(37, 211, 102, 0.2);
-    }
-    .gateway-card.whatsapp:hover { box-shadow: 0 16px 60px rgba(37, 211, 102, 0.4); }
-    .gateway-card-icon { font-size: 2.5rem; }
-    .gateway-card h3 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; }
-    .gateway-card p { font-size: 0.9rem; opacity: 0.85; line-height: 1.5; max-width: 220px; text-align: center; }
-    .gateway-card .gateway-cta {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(255,255,255,0.2);
-      padding: 0.6rem 1.25rem;
-      border-radius: 100px;
-      font-size: 0.85rem; font-weight: 600;
-      margin-top: 0.5rem;
-      transition: background 0.2s;
-    }
-    .gateway-card:hover .gateway-cta { background: rgba(255,255,255,0.3); }
-
-    /* ── FOOTER ── */
-    footer {
-      padding: 3rem 2rem;
-      border-top: 1px solid rgba(107, 70, 193, 0.15);
-      text-align: center;
-    }
-    .footer-inner { max-width: 1100px; margin: 0 auto; }
-    .footer-logo {
-      font-family: var(--font-display);
-      font-size: 2rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--purple-300), var(--accent-pink));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.75rem;
-    }
-    .footer-tagline { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; }
-    .footer-links { display: flex; gap: 2rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
-    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--purple-300); }
-    .footer-copy { font-size: 0.78rem; color: var(--text-muted); }
-    .footer-pun {
-      margin-top: 1.5rem;
-      font-size: 0.82rem; color: var(--text-muted);
-      font-style: italic;
-    }
-
-    /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .coral-layout { grid-template-columns: 1fr; gap: 2rem; }
-      .hero { padding: 7rem 1.25rem 4rem; }
-      section { padding: 4rem 1.25rem; }
-    }
-
-  </style>
-</head>
-<body>
-
-<!-- Parallax Background -->
-<div class="parallax-bg">
-  <div class="bg-image-layer"></div>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="orb orb-4"></div>
-  <div class="stars" id="stars"></div>
-</div>
-
-<div class="page">
-
-  <!-- NAV -->
-  <nav>
-    <a href="#" class="nav-logo">
-      <img src="./Clare-transparent-background.png" alt="Clare Logo" style="height: 38px; width: auto; object-fit: contain; filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.6)); flex-shrink: 0; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-      <span class="nav-logo-text">Clare</span>
-    </a>
-    <div class="nav-links">
-      <a href="#how">How it works</a>
-      <a href="#powers">Powers</a>
-      <a href="#roadmap">Roadmap</a>
-      <a href="https://github.com/Vachilla64/ClareTop/releases/download/windows/Clare_0.1.0_x64-setup.exe" class="nav-cta" style="background: var(--purple-700) !important;">Download .exe</a>
-      <a href="#gateway" class="nav-cta">Meet Clare →</a>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <!--<div class="hero-badge">
-      <span class="hero-badge-dot"></span>
-      Powered by Coral SQL Engine
-    </div>-->
-
-    <h1 class="hero-headline">
-      <span class="line-1">Meet Clare.</span>
-      <span class="line-2">Your new favorite work companion.</span>
-    </h1>
-
-    <p class="hero-sub">
-      Clare is a super-smart assistant who lives right where you already hang out:
-      <em>Discord</em> and <em>WhatsApp</em>. She connects to your GitHub, Google Calendar,
-      and Slack so you can manage your work day just by sending a quick message. No new dashboards to learn, no extra apps to install.
-    </p>
-
-    <div class="hero-ctas">
-      <a href="https://github.com/Vachilla64/ClareTop/releases/download/windows/Clare_0.1.0_x64-setup.exe" class="btn btn-ghost" style="background: var(--purple-700); color: white; border-color: var(--purple-500);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        Download .exe
-      </a>
-      <a href="#gateway" class="btn btn-discord">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-        Add to Discord
-      </a>
-      <a href="#gateway" class="btn btn-whatsapp">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-        Chat on WhatsApp
-      </a>
-      <a href="https://github.com/Vachilla64/Clare" class="btn btn-ghost">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.285 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-        View on GitHub ↗
-      </a>
-    </div>
-
-    <!-- Floating Clare Graphic -->
-    <img src="./Clare-transparent-background.png" alt="" class="hero-character" style="position: absolute; bottom: 0; left: 2%; width: clamp(200px, 25vw, 400px); z-index: 1; opacity: 0.85; pointer-events: none; animation: float 6s ease-in-out infinite; filter: drop-shadow(0 0 40px rgba(167, 139, 250, 0.4)); transform-origin: bottom center;">
-    
-    <!-- Hero Media Grid -->
-    <div class="hero-content-grid" style="display: flex; gap: 2rem; align-items: stretch; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 1020px; margin-top: 1rem;">
-      <!-- Video Card -->
-      <div class="hero-video-card" style="background: rgba(22, 13, 46, 0.8); border: 1px solid rgba(107, 70, 193, 0.3); border-radius: 20px; padding: 1.5rem; flex: 1 1 480px; max-width: 480px; width: 100%; backdrop-filter: blur(20px); box-shadow: 0 32px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05); animation: fadeSlideDown 1s ease 0.4s both; display: flex; flex-direction: column; text-align: left;">
-        <div class="chat-header" style="margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(107, 70, 193, 0.2); display: flex; align-items: center; gap: 0.75rem;">
-          <div class="chat-avatar" style="background: transparent; color: #FF0000; width: auto;">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/><polygon points="9.545,8.432 15.818,12 9.545,15.568" fill="#FFFFFF"/></svg>
-          </div>
-          <div>
-            <div class="chat-name">Demo Video</div>
-            <div class="chat-status" style="color: var(--accent-pink);">
-              <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-pink); margin-right: 4px; animation: pulse 2s infinite;"></span>
-              See Clare in action
-            </div>
-          </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Clare | No Dashboards. Just Ask.</title>
+        <link
+            rel="icon"
+            type="image/png"
+            href="./Clare-transparent-background.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            href="./Clare-transparent-background.png"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            :root {
+                --purple-950: #0d0618;
+                --purple-900: #160d2e;
+                --purple-800: #2d1a5e;
+                --purple-700: #4a2d96;
+                --purple-600: #6b46c1;
+                --purple-500: #7c3aed;
+                --purple-400: #a78bfa;
+                --purple-300: #c4b5fd;
+                --purple-200: #ddd6fe;
+                --purple-100: #ede9fe;
+                --accent-pink: #f472b6;
+                --accent-cyan: #22d3ee;
+                --accent-amber: #fbbf24;
+                --text-primary: #f5f0ff;
+                --text-secondary: #c4b5fd;
+                --text-muted: #7c6fa0;
+                --font-display: "Syne", sans-serif;
+                --font-body: "DM Sans", sans-serif;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                font-family: var(--font-body);
+                background: var(--purple-950);
+                color: var(--text-primary);
+                overflow-x: hidden;
+            }
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+                pointer-events: none;
+                z-index: 1000;
+                opacity: 0.4;
+            }
+            .parallax-bg {
+                position: fixed;
+                inset: 0;
+                z-index: 0;
+                overflow: hidden;
+            }
+            .bg-image-layer {
+                position: absolute;
+                top: -15vh;
+                left: -5vw;
+                right: -5vw;
+                bottom: -15vh;
+                background-image: url("Gemini_Generated_Image_vyvnfvyvnfvyvnfv.png");
+                background-size: cover;
+                background-position: center;
+                opacity: 0.1;
+                mix-blend-mode: screen;
+                filter: saturate(1.1);
+                z-index: 1;
+                will-change: transform;
+                pointer-events: none;
+            }
+            .orb {
+                position: absolute;
+                border-radius: 50%;
+                filter: blur(80px);
+                opacity: 0.25;
+                animation: drift linear infinite;
+                will-change: transform;
+            }
+            .orb-1 {
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(circle, #6b46c1, transparent);
+                top: -200px;
+                left: -150px;
+                animation-duration: 25s;
+            }
+            .orb-2 {
+                width: 500px;
+                height: 500px;
+                background: radial-gradient(circle, #7c3aed, transparent);
+                top: 40%;
+                right: -200px;
+                animation-duration: 30s;
+                animation-delay: -8s;
+            }
+            .orb-3 {
+                width: 400px;
+                height: 400px;
+                background: radial-gradient(circle, #f472b6, transparent);
+                bottom: -100px;
+                left: 30%;
+                animation-duration: 20s;
+                animation-delay: -4s;
+                opacity: 0.12;
+            }
+            .orb-4 {
+                width: 300px;
+                height: 300px;
+                background: radial-gradient(circle, #22d3ee, transparent);
+                top: 60%;
+                left: 10%;
+                animation-duration: 35s;
+                animation-delay: -15s;
+                opacity: 0.1;
+            }
+            @keyframes drift {
+                0% {
+                    transform: translate(0, 0) scale(1);
+                }
+                33% {
+                    transform: translate(40px, -30px) scale(1.05);
+                }
+                66% {
+                    transform: translate(-20px, 20px) scale(0.97);
+                }
+                100% {
+                    transform: translate(0, 0) scale(1);
+                }
+            }
+            .stars {
+                position: fixed;
+                inset: 0;
+                z-index: 0;
+            }
+            .star {
+                position: absolute;
+                background: white;
+                border-radius: 50%;
+                animation: twinkle ease-in-out infinite;
+            }
+            @keyframes twinkle {
+                0%,
+                100% {
+                    opacity: 0.1;
+                    transform: scale(1);
+                }
+                50% {
+                    opacity: 0.7;
+                    transform: scale(1.3);
+                }
+            }
+            .page {
+                position: relative;
+                z-index: 10;
+            }
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                padding: 1.25rem 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                backdrop-filter: blur(20px);
+                background: rgba(13, 6, 24, 0.6);
+                border-bottom: 1px solid rgba(107, 70, 193, 0.15);
+            }
+            .nav-logo {
+                font-family: var(--font-display);
+                font-weight: 800;
+                font-size: 1.5rem;
+                letter-spacing: -0.02em;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+            }
+            .nav-logo-text {
+                color: #fff;
+                transition: color 0.2s;
+            }
+            .nav-logo:hover .nav-logo-text {
+                color: var(--purple-300);
+            }
+            .nav-links {
+                display: flex;
+                gap: 2rem;
+                align-items: center;
+            }
+            .nav-links a {
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 0.9rem;
+                font-weight: 500;
+                transition: color 0.2s;
+            }
+            .nav-links a:hover {
+                color: var(--text-primary);
+            }
+            .nav-cta {
+                background: var(--purple-600) !important;
+                color: white !important;
+                padding: 0.5rem 1.25rem;
+                border-radius: 100px;
+                transition:
+                    background 0.2s,
+                    transform 0.2s !important;
+            }
+            .nav-cta:hover {
+                background: var(--purple-500) !important;
+                transform: translateY(-1px);
+            }
+            .hero {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 8rem 2rem 5rem;
+                position: relative;
+            }
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.3;
+                }
+            }
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-15px);
+                }
+            }
+            .hero-headline {
+                font-family: var(--font-display);
+                font-size: clamp(2rem, 5vw, 4.5rem);
+                font-weight: 800;
+                line-height: 1;
+                letter-spacing: -0.04em;
+                margin-bottom: 1.5rem;
+                animation: fadeSlideDown 0.9s ease 0.1s both;
+            }
+            .hero-headline .line-1 {
+                display: block;
+                color: var(--text-primary);
+            }
+            .hero-headline .line-2 {
+                display: block;
+                background: linear-gradient(
+                    135deg,
+                    #a78bfa 0%,
+                    #f472b6 50%,
+                    #22d3ee 100%
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .hero-sub {
+                font-size: clamp(1rem, 2vw, 1.25rem);
+                color: var(--text-secondary);
+                font-weight: 300;
+                max-width: 580px;
+                line-height: 1.7;
+                margin-bottom: 3rem;
+                animation: fadeSlideDown 1s ease 0.2s both;
+            }
+            .hero-sub em {
+                color: var(--purple-300);
+                font-style: normal;
+                font-weight: 500;
+            }
+            .hero-ctas {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-bottom: 4rem;
+                animation: fadeSlideDown 1s ease 0.3s both;
+            }
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.6rem;
+                padding: 0.85rem 1.75rem;
+                border-radius: 100px;
+                font-family: var(--font-body);
+                font-size: 0.95rem;
+                font-weight: 500;
+                text-decoration: none;
+                transition:
+                    transform 0.2s,
+                    box-shadow 0.2s;
+                cursor: pointer;
+                border: none;
+            }
+            .btn:hover {
+                transform: translateY(-2px);
+            }
+            .btn-discord {
+                background: #5865f2;
+                color: white;
+                box-shadow: 0 4px 24px rgba(88, 101, 242, 0.4);
+            }
+            .btn-discord:hover {
+                box-shadow: 0 8px 32px rgba(88, 101, 242, 0.6);
+            }
+            .btn-whatsapp {
+                background: #25d366;
+                color: white;
+                box-shadow: 0 4px 24px rgba(37, 211, 102, 0.3);
+            }
+            .btn-whatsapp:hover {
+                box-shadow: 0 8px 32px rgba(37, 211, 102, 0.5);
+            }
+            .btn-ghost {
+                background: rgba(107, 70, 193, 0.15);
+                border: 1px solid rgba(167, 139, 250, 0.3);
+                color: var(--purple-300);
+            }
+            .btn-ghost:hover {
+                background: rgba(107, 70, 193, 0.3);
+            }
+            .hero-chat {
+                background: rgba(22, 13, 46, 0.8);
+                border: 1px solid rgba(107, 70, 193, 0.3);
+                border-radius: 20px;
+                padding: 2rem 1.5rem;
+                max-width: 480px;
+                width: 100%;
+                backdrop-filter: blur(20px);
+                text-align: left;
+                animation: fadeSlideDown 1s ease 0.4s both;
+                box-shadow:
+                    0 32px 80px rgba(0, 0, 0, 0.5),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            }
+            .chat-header {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 1.25rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid rgba(107, 70, 193, 0.2);
+            }
+            .chat-avatar {
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                background: linear-gradient(
+                    135deg,
+                    var(--purple-600),
+                    var(--accent-pink)
+                );
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                font-weight: 700;
+                color: white;
+                font-family: var(--font-display);
+            }
+            .chat-name {
+                font-weight: 600;
+                font-size: 0.9rem;
+            }
+            .chat-status {
+                font-size: 0.75rem;
+                color: #22d3ee;
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
+            }
+            .chat-status::before {
+                content: "";
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: #22d3ee;
+                animation: pulse 2s infinite;
+            }
+            .chat-msg {
+                margin-bottom: 0.75rem;
+                font-size: 0.85rem;
+                line-height: 1.5;
+            }
+            .chat-msg.user {
+                text-align: right;
+            }
+            .chat-msg.user span {
+                background: var(--purple-700);
+                color: var(--purple-100);
+                padding: 0.5rem 0.85rem;
+                border-radius: 16px 16px 4px 16px;
+                display: inline-block;
+            }
+            .chat-msg.clare span {
+                background: rgba(107, 70, 193, 0.2);
+                border: 1px solid rgba(167, 139, 250, 0.2);
+                color: var(--text-primary);
+                padding: 0.5rem 0.85rem;
+                border-radius: 4px 16px 16px 16px;
+                display: inline-block;
+            }
+            .chat-msg .tag {
+                font-size: 0.7rem;
+                color: var(--text-muted);
+                margin-bottom: 0.25rem;
+            }
+            .chat-sql {
+                background: rgba(0, 0, 0, 0.4);
+                border: 1px solid rgba(107, 70, 193, 0.2);
+                border-radius: 8px;
+                padding: 0.5rem 0.75rem;
+                font-family: "Courier New", monospace;
+                font-size: 0.72rem;
+                color: #a78bfa;
+                margin-top: 0.5rem;
+            }
+            @keyframes fadeSlideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            section {
+                padding: 6rem 2rem;
+            }
+            .section-inner {
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+            .section-label {
+                font-family: var(--font-display);
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: var(--purple-400);
+                margin-bottom: 1rem;
+            }
+            .section-title {
+                font-family: var(--font-display);
+                font-size: clamp(2rem, 4vw, 3.5rem);
+                font-weight: 800;
+                line-height: 1.1;
+                letter-spacing: -0.03em;
+                margin-bottom: 1.25rem;
+            }
+            .section-sub {
+                font-size: 1.05rem;
+                color: var(--text-secondary);
+                font-weight: 300;
+                line-height: 1.7;
+                max-width: 560px;
+            }
+            .how {
+                background: rgba(22, 13, 46, 0.5);
+                border-top: 1px solid rgba(107, 70, 193, 0.15);
+                border-bottom: 1px solid rgba(107, 70, 193, 0.15);
+            }
+            .steps {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 2rem;
+                margin-top: 3.5rem;
+            }
+            .step {
+                padding: 2rem;
+                background: rgba(45, 26, 94, 0.4);
+                border: 1px solid rgba(107, 70, 193, 0.2);
+                border-radius: 16px;
+                transition:
+                    border-color 0.3s,
+                    transform 0.3s;
+            }
+            .step:hover {
+                border-color: rgba(167, 139, 250, 0.5);
+                transform: translateY(-4px);
+            }
+            .step-num {
+                font-family: var(--font-display);
+                font-size: 2.5rem;
+                font-weight: 800;
+                background: linear-gradient(
+                    135deg,
+                    var(--purple-400),
+                    var(--accent-pink)
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                margin-bottom: 1rem;
+                line-height: 1;
+            }
+            .step h3 {
+                font-family: var(--font-display);
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+            }
+            .step p {
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+                line-height: 1.6;
+            }
+            .powers-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-top: 3.5rem;
+            }
+            .power-card {
+                padding: 1.75rem;
+                background: rgba(45, 26, 94, 0.3);
+                border: 1px solid rgba(107, 70, 193, 0.2);
+                border-radius: 16px;
+                transition: all 0.3s;
+                position: relative;
+                overflow: hidden;
+            }
+            .power-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--purple-400),
+                    transparent
+                );
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            .power-card:hover {
+                border-color: rgba(167, 139, 250, 0.4);
+                transform: translateY(-3px);
+            }
+            .power-card:hover::before {
+                opacity: 1;
+            }
+            .power-icon {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+            .power-card h3 {
+                font-family: var(--font-display);
+                font-weight: 700;
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            .power-card p {
+                font-size: 0.875rem;
+                color: var(--text-secondary);
+                line-height: 1.6;
+            }
+            .power-tag {
+                display: inline-block;
+                background: rgba(107, 70, 193, 0.3);
+                border: 1px solid rgba(167, 139, 250, 0.3);
+                border-radius: 4px;
+                font-size: 0.7rem;
+                color: var(--purple-300);
+                padding: 0.15rem 0.5rem;
+                margin-top: 0.75rem;
+                font-family: monospace;
+            }
+            .coral-section {
+                background: rgba(13, 6, 24, 0.8);
+                border-top: 1px solid rgba(107, 70, 193, 0.15);
+            }
+            .coral-layout {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4rem;
+                align-items: center;
+                margin-top: 3rem;
+            }
+            .coral-code-block {
+                background: rgba(0, 0, 0, 0.6);
+                border: 1px solid rgba(107, 70, 193, 0.3);
+                border-radius: 16px;
+                padding: 2rem 1.5rem;
+                font-family: "Courier New", monospace;
+                font-size: 0.82rem;
+                line-height: 1.8;
+                overflow-x: auto;
+            }
+            .coral-code-block .comment {
+                color: var(--text-muted);
+            }
+            .coral-code-block .keyword {
+                color: #f472b6;
+            }
+            .coral-code-block .table {
+                color: #22d3ee;
+            }
+            .coral-code-block .string {
+                color: #fbbf24;
+            }
+            .coral-features {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .coral-feature {
+                display: flex;
+                gap: 1rem;
+                align-items: flex-start;
+                padding: 1rem;
+                border-radius: 12px;
+                border: 1px solid rgba(107, 70, 193, 0.15);
+                transition: border-color 0.2s;
+            }
+            .coral-feature:hover {
+                border-color: rgba(167, 139, 250, 0.35);
+            }
+            .coral-check {
+                color: #22d3ee;
+                font-size: 1.1rem;
+                margin-top: 0.1rem;
+                flex-shrink: 0;
+            }
+            .coral-feature h4 {
+                font-family: var(--font-display);
+                font-size: 0.9rem;
+                font-weight: 700;
+                margin-bottom: 0.2rem;
+            }
+            .coral-feature p {
+                font-size: 0.82rem;
+                color: var(--text-secondary);
+                line-height: 1.5;
+            }
+            /* QUIKDB */
+            .quikdb-section {
+                background: rgba(9, 4, 22, 0.9);
+                border-top: 1px solid rgba(34, 211, 238, 0.1);
+                border-bottom: 1px solid rgba(34, 211, 238, 0.1);
+            }
+            .quikdb-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.6rem;
+                background: rgba(34, 211, 238, 0.07);
+                border: 1px solid rgba(34, 211, 238, 0.2);
+                border-radius: 100px;
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+                color: var(--accent-cyan);
+                margin-bottom: 1.5rem;
+            }
+            .quikdb-layout {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4rem;
+                align-items: start;
+                margin-top: 2.5rem;
+            }
+            .quikdb-stats {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+            .quikdb-stat {
+                padding: 2rem 1.5rem;
+                background: rgba(34, 211, 238, 0.04);
+                border: 1px solid rgba(34, 211, 238, 0.12);
+                border-radius: 14px;
+                transition:
+                    border-color 0.2s,
+                    transform 0.2s;
+            }
+            .quikdb-stat:hover {
+                border-color: rgba(34, 211, 238, 0.3);
+                transform: translateY(-2px);
+            }
+            .quikdb-stat-num {
+                font-family: var(--font-display);
+                font-size: 1.8rem;
+                font-weight: 800;
+                color: var(--accent-cyan);
+                line-height: 1;
+                margin-bottom: 0.3rem;
+            }
+            .quikdb-stat-label {
+                font-size: 0.78rem;
+                color: var(--text-muted);
+                line-height: 1.4;
+            }
+            .quikdb-cta {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba(34, 211, 238, 0.08);
+                border: 1px solid rgba(34, 211, 238, 0.25);
+                color: var(--accent-cyan);
+                padding: 0.7rem 1.4rem;
+                border-radius: 100px;
+                font-size: 0.875rem;
+                font-weight: 600;
+                text-decoration: none;
+                transition:
+                    background 0.2s,
+                    transform 0.2s;
+            }
+            .quikdb-cta:hover {
+                background: rgba(34, 211, 238, 0.18);
+                transform: translateY(-2px);
+            }
+            .quikdb-features {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .quikdb-feature {
+                display: flex;
+                gap: 1rem;
+                align-items: flex-start;
+                padding: 1.1rem;
+                border-radius: 12px;
+                border: 1px solid rgba(34, 211, 238, 0.08);
+                background: rgba(34, 211, 238, 0.02);
+                transition: border-color 0.2s;
+            }
+            .quikdb-feature:hover {
+                border-color: rgba(34, 211, 238, 0.25);
+            }
+            .quikdb-dot {
+                color: var(--accent-cyan);
+                font-size: 1rem;
+                margin-top: 0.1rem;
+                flex-shrink: 0;
+            }
+            .quikdb-feature h4 {
+                font-family: var(--font-display);
+                font-size: 0.9rem;
+                font-weight: 700;
+                margin-bottom: 0.2rem;
+            }
+            .quikdb-feature p {
+                font-size: 0.82rem;
+                color: var(--text-secondary);
+                line-height: 1.5;
+            }
+            /* ROADMAP */
+            .roadmap {
+                background: rgba(22, 13, 46, 0.4);
+                border-top: 1px solid rgba(107, 70, 193, 0.15);
+            }
+            .roadmap-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 1.25rem;
+                margin-top: 3rem;
+            }
+            .roadmap-card {
+                padding: 2rem 1.5rem;
+                border-radius: 16px;
+                border: 1px dashed rgba(107, 70, 193, 0.3);
+                background: rgba(45, 26, 94, 0.2);
+                transition: all 0.3s;
+                position: relative;
+            }
+            .roadmap-card::after {
+                content: "SOON";
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                font-size: 0.6rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                color: var(--accent-amber);
+                font-family: var(--font-display);
+                background: rgba(251, 191, 36, 0.1);
+                border: 1px solid rgba(251, 191, 36, 0.25);
+                padding: 0.15rem 0.4rem;
+                border-radius: 4px;
+            }
+            .roadmap-card:hover {
+                border-color: rgba(167, 139, 250, 0.4);
+                background: rgba(45, 26, 94, 0.4);
+            }
+            .roadmap-icon {
+                font-size: 1.75rem;
+                margin-bottom: 0.75rem;
+            }
+            .roadmap-card h3 {
+                font-family: var(--font-display);
+                font-weight: 700;
+                font-size: 0.95rem;
+                margin-bottom: 0.4rem;
+            }
+            .roadmap-card p {
+                font-size: 0.82rem;
+                color: var(--text-muted);
+                line-height: 1.5;
+            }
+            .roadmap-divider {
+                text-align: center;
+                margin: 3rem 0 1rem;
+                font-family: var(--font-display);
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: var(--text-muted);
+                position: relative;
+            }
+            .roadmap-divider::before,
+            .roadmap-divider::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                width: 35%;
+                height: 1px;
+                background: rgba(107, 70, 193, 0.2);
+            }
+            .roadmap-divider::before {
+                left: 0;
+            }
+            .roadmap-divider::after {
+                right: 0;
+            }
+            .gateway {
+                text-align: center;
+                border-top: 1px solid rgba(107, 70, 193, 0.15);
+            }
+            .gateway-cards {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem;
+                margin-top: 3rem;
+            }
+            .gateway-card {
+                padding: 2rem 1.5rem;
+                border-radius: 24px;
+                text-decoration: none;
+                color: white;
+                transition:
+                    transform 0.3s,
+                    box-shadow 0.3s;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            .gateway-card:hover {
+                transform: translateY(-6px);
+            }
+            .gateway-card.discord {
+                background: linear-gradient(135deg, #5865f2, #4752c4);
+                box-shadow: 0 8px 40px rgba(88, 101, 242, 0.3);
+            }
+            .gateway-card.discord:hover {
+                box-shadow: 0 16px 60px rgba(88, 101, 242, 0.5);
+            }
+            .gateway-card.whatsapp {
+                background: linear-gradient(135deg, #25d366, #128c7e);
+                box-shadow: 0 8px 40px rgba(37, 211, 102, 0.2);
+            }
+            .gateway-card.whatsapp:hover {
+                box-shadow: 0 16px 60px rgba(37, 211, 102, 0.4);
+            }
+            .gateway-card-icon {
+                font-size: 2.5rem;
+            }
+            .gateway-card h3 {
+                font-family: var(--font-display);
+                font-size: 1.4rem;
+                font-weight: 800;
+            }
+            .gateway-card p {
+                font-size: 0.9rem;
+                opacity: 0.85;
+                line-height: 1.5;
+                max-width: 280px;
+                text-align: center;
+            }
+            .gateway-card .gateway-cta {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba(255, 255, 255, 0.2);
+                padding: 0.6rem 1.25rem;
+                border-radius: 100px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                margin-top: 0.5rem;
+                transition: background 0.2s;
+            }
+            .gateway-card:hover .gateway-cta {
+                background: rgba(255, 255, 255, 0.3);
+            }
+            footer {
+                padding: 3rem 2rem;
+                border-top: 1px solid rgba(107, 70, 193, 0.15);
+                text-align: center;
+            }
+            .footer-inner {
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+            .footer-logo {
+                font-family: var(--font-display);
+                font-size: 2rem;
+                font-weight: 800;
+                background: linear-gradient(
+                    135deg,
+                    var(--purple-300),
+                    var(--accent-pink)
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                margin-bottom: 0.75rem;
+            }
+            .footer-tagline {
+                font-size: 0.9rem;
+                color: var(--text-muted);
+                margin-bottom: 1.5rem;
+            }
+            .footer-links {
+                display: flex;
+                gap: 2rem;
+                justify-content: center;
+                margin-bottom: 2rem;
+                flex-wrap: wrap;
+            }
+            .footer-links a {
+                color: var(--text-muted);
+                text-decoration: none;
+                font-size: 0.85rem;
+                transition: color 0.2s;
+            }
+            .footer-links a:hover {
+                color: var(--purple-300);
+            }
+            .footer-copy {
+                font-size: 0.78rem;
+                color: var(--text-muted);
+            }
+            .footer-pun {
+                margin-top: 1.5rem;
+                font-size: 0.82rem;
+                color: var(--text-muted);
+                font-style: italic;
+            }
+            .reveal {
+                opacity: 0;
+                transform: translateY(30px);
+                transition:
+                    opacity 0.7s ease,
+                    transform 0.7s ease;
+            }
+            .reveal.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            @media (max-width: 768px) {
+                .nav-links {
+                    display: none;
+                }
+                .coral-layout,
+                .quikdb-layout {
+                    grid-template-columns: 1fr;
+                    gap: 2rem;
+                }
+                .hero {
+                    padding: 7rem 1.25rem 4rem;
+                }
+                section {
+                    padding: 4rem 1.25rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="parallax-bg">
+            <div class="bg-image-layer"></div>
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+            <div class="orb orb-4"></div>
+            <div class="stars" id="stars"></div>
         </div>
-        <div style="position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; width: 100%;">
-          <iframe src="https://www.youtube.com/embed/NYbxGPNc3u4?si=kb-qG_SBRhDWmfKh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
-        </div>
-      </div>
 
-      <!-- Chat Mockup -->
-      <div class="hero-chat" style="margin: 0; flex: 1 1 480px;">
-      <div class="chat-header">
-        <div class="chat-avatar" style="background: rgba(107, 70, 193, 0.2); overflow: hidden; border: 1px solid rgba(167, 139, 250, 0.4);">
-          <img src="./Clare-transparent-background.png" alt="Clare" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <div>
-          <div class="chat-name">Clare</div>
-          <div class="chat-status">Online & absolutely in her era</div>
-        </div>
-      </div>
-      <div class="chat-msg user"><span>@Clare daily brief</span></div>
-      <div class="chat-msg clare">
-        <div class="tag">Clare</div>
-        <span>
-          Good morning! ☀️ Here's the rundown for today:<br><br>
-          📅 <strong>3 events today:</strong> standup at 9am, submission deadline at 1pm.<br>
-          🐙 <strong>5 open GitHub issues</strong> in withcoral/coral (and #1062 looks spicy).<br>
-          💬 <strong>Slack:</strong> 12 unread in #general, plus someone's having a moment in #incidents.<br><br>
-          Would you like me to draft talking points for your standup?
-        </span>
-        <div class="chat-sql">SQL → SELECT summary FROM google_calendar.events LIMIT 5;<br>SELECT number, title FROM github.issues WHERE owner='withcoral' LIMIT 5</div>
-      </div>
-    </div>
-    </div>
-  </section>
+        <div class="page">
+            <nav>
+                <a href="#" class="nav-logo">
+                    <img
+                        src="./Clare-transparent-background.png"
+                        alt="Clare"
+                        style="
+                            height: 38px;
+                            width: auto;
+                            filter: drop-shadow(
+                                0 0 8px rgba(167, 139, 250, 0.6)
+                            );
+                            flex-shrink: 0;
+                            transition: transform 0.2s;
+                        "
+                        onmouseover="this.style.transform = 'scale(1.05)'"
+                        onmouseout="this.style.transform = 'scale(1)'"
+                    />
+                    <span class="nav-logo-text">Clare</span>
+                </a>
+                <div class="nav-links">
+                    <a href="#how">How it works</a>
+                    <a href="#powers">Powers</a>
+                    <a href="#hosting">Hosting</a>
+                    <a href="#roadmap">Roadmap</a>
+                    <a
+                        href="https://github.com/Vachilla64/ClareAgent"
+                        class="nav-cta"
+                        style="
+                            background: var(--purple-700) !important;
+                            color: white !important;
+                            border: 1px solid var(--purple-500);
+                            text-decoration: none;
+                        "
+                        >View on GitHub</a
+                    >
+                    <a href="#gateway" class="nav-cta">Meet Clare</a>
+                </div>
+            </nav>
 
-  <!-- HOW IT WORKS -->
-  <section class="how" id="how">
-    <div class="section-inner">
-      <p class="section-label reveal">How it works</p>
-      <h2 class="section-title reveal">Not magic.<br>Just really <em style="background: linear-gradient(135deg,#a78bfa,#f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; font-style:normal;">clever database stuff.</em></h2>
-      <p class="section-sub reveal">Under the hood, Clare is powered by Coral, an open-source SQL engine that transforms live APIs into queryable tables. No complex databases, no delay, and no annoying integrations.</p>
-      <div class="steps">
-        <div class="step reveal">
-          <div class="step-num">01</div>
-          <h3>Chat like a human</h3>
-          <p>Send a message on WhatsApp or Discord. Clare reads your message using Gemini, meaning you can talk to her just like you would a teammate. No robotic commands needed.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">02</div>
-          <h3>Instant live queries</h3>
-          <p>Clare immediately translates your question into SQL and runs it against your tools: GitHub, Google Calendar, and Slack. All in a fraction of a second.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">03</div>
-          <h3>Get clear answers</h3>
-          <p>No messy JSON or walls of raw data. You get a clean, friendly summary right back in the same conversation window.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">04</div>
-          <h3>Delegate tasks</h3>
-          <p>Clare doesn't just read data; she can take action. Ask her to book a team sync, and she will set it up on your Google Calendar instantly.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+            <section class="hero">
+                <h1 class="hero-headline">
+                    <span class="line-1">Meet Clare.</span>
+                    <span class="line-2"
+                        >When things aren't clear, Clare is here!</span
+                    >
+                </h1>
+                <p class="hero-sub">
+                    Clare lives in <em>WhatsApp</em>, <em>Discord</em>, and
+                    <em>Slack</em>, apps you're already using. She's wired into
+                    your GitHub, Google Calendar, and live APIs via Coral SQL.
+                    Instead of opening seven tabs and feeling a growing sense of
+                    dread, you just send her a message. That's genuinely it.
+                </p>
+                <div class="hero-ctas">
+                    <a
+                        href="https://discord.com/oauth2/authorize?client_id=1509967801291509781&permissions=8&integration_type=0&scope=bot"
+                        class="btn btn-discord"
+                    >
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"
+                            />
+                        </svg>
+                        Add to Discord
+                    </a>
+                    <a
+                        href="https://wa.me/14155238886"
+                        class="btn btn-whatsapp"
+                    >
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"
+                            />
+                        </svg>
+                        Chat on WhatsApp
+                    </a>
+                    <a
+                        href="https://github.com/Vachilla64/ClareAgent"
+                        class="btn btn-ghost"
+                    >
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.285 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"
+                            />
+                        </svg>
+                        View on GitHub
+                    </a>
+                </div>
 
-  <!-- POWERS -->
-  <section id="powers">
-    <div class="section-inner">
-      <p class="section-label reveal">What she brings to the tables</p>
-      <h2 class="section-title reveal">Clare's Superpowers</h2>
-      <p class="section-sub reveal">Everything is fetched live with standard SQL queries. No stale data, no syncing delays. Just fast, accurate responses when you need them.</p>
+                <img
+                    src="./Clare-transparent-background.png"
+                    alt=""
+                    style="
+                        position: absolute;
+                        bottom: 0;
+                        left: 2%;
+                        width: clamp(200px, 25vw, 400px);
+                        z-index: 1;
+                        opacity: 0.85;
+                        pointer-events: none;
+                        animation: float 6s ease-in-out infinite;
+                        filter: drop-shadow(0 0 40px rgba(167, 139, 250, 0.4));
+                        transform-origin: bottom center;
+                    "
+                />
 
-      <div class="powers-grid">
-        <div class="power-card reveal">
-          <div class="power-icon">🌅</div>
-          <h3>Daily Rundowns</h3>
-          <p>Get a neat recap to start your day. Clare pulls details from your calendar and GitHub projects to highlight your key priorities.</p>
-          <div class="power-tag">google_calendar JOIN github.issues</div>
-        </div>
-        <div class="power-card reveal">
-          <div class="power-icon">🐙</div>
-          <h3>GitHub Companion</h3>
-          <p>Look up open issues, check pull requests, and see what's blocking your current sprint. No need to click around multiple repos.</p>
-          <div class="power-tag">github.issues, github.pulls, github.repos</div>
-        </div>
-        <div class="power-card reveal">
-          <div class="power-icon">📅</div>
-          <h3>Calendar Coordinator</h3>
-          <p>Ask Clare to book meetings or check your schedule. She reads your availability and creates event invites directly.</p>
-          <div class="power-tag">google_calendar.events (R/W)</div>
-        </div>
-        <div class="power-card reveal">
-          <div class="power-icon">💬</div>
-          <h3>Slack Digest</h3>
-          <p>Catch up on key conversations without reading endless threads. Clare summarizes important highlights from your channels.</p>
-          <div class="power-tag">slack.messages, slack.channels</div>
-        </div>
-        <div class="power-card reveal">
-          <div class="power-icon">🔍</div>
-          <h3>Schema Lookup</h3>
-          <p>Want to see what database tables Clare has access to? Ask her for a live list of all connected resources.</p>
-          <div class="power-tag">SELECT * FROM coral.tables</div>
-        </div>
-        <div class="power-card reveal">
-          <div class="power-icon">📱</div>
-          <h3>Discord & WhatsApp</h3>
-          <p>Add Clare to your Discord workspace for team operations, or message her on WhatsApp for personal scheduling on the go.</p>
-          <div class="power-tag">Twilio + discord.js</div>
-        </div>
-      </div>
-    </div>
-  </section>
+                <div
+                    style="
+                        display: flex;
+                        gap: 2rem;
+                        align-items: stretch;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                        width: 100%;
+                        max-width: 1020px;
+                        margin-top: 1rem;
+                    "
+                >
+                    <div
+                        style="
+                            background: rgba(22, 13, 46, 0.8);
+                            border: 1px solid rgba(107, 70, 193, 0.3);
+                            border-radius: 20px;
+                            padding: 2rem 1.5rem;
+                            flex: 1 1 480px;
+                            max-width: 480px;
+                            width: 100%;
+                            backdrop-filter: blur(20px);
+                            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+                            animation: fadeSlideDown 1s ease 0.4s both;
+                            display: flex;
+                            flex-direction: column;
+                            text-align: left;
+                        "
+                    >
+                        <div
+                            class="chat-header"
+                            style="
+                                margin-bottom: 1.25rem;
+                                padding-bottom: 1rem;
+                                border-bottom: 1px solid rgba(107, 70, 193, 0.2);
+                            "
+                        >
+                            <div
+                                class="chat-avatar"
+                                style="
+                                    background: transparent;
+                                    color: #ff0000;
+                                    width: auto;
+                                "
+                            >
+                                <svg
+                                    width="28"
+                                    height="28"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path
+                                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+                                    />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="chat-name">Demo Video</div>
+                                <div
+                                    class="chat-status"
+                                    style="color: var(--accent-pink)"
+                                >
+                                    See Clare in action
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                position: relative;
+                                padding-bottom: 56.25%;
+                                height: 0;
+                                border-radius: 12px;
+                                overflow: hidden;
+                            "
+                        >
+                            <iframe
+                                src="https://www.youtube.com/embed/NYbxGPNc3u4?si=kb-qG_SBRhDWmfKh"
+                                title="Clare demo"
+                                frameborder="0"
+                                allow="
+                                    accelerometer;
+                                    autoplay;
+                                    clipboard-write;
+                                    encrypted-media;
+                                    gyroscope;
+                                    picture-in-picture;
+                                    web-share;
+                                "
+                                allowfullscreen
+                                style="
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                "
+                            ></iframe>
+                        </div>
+                    </div>
 
-  <!-- CORAL SECTION -->
-  <section class="coral-section">
-    <div class="section-inner">
-      <p class="section-label reveal">Under the hood</p>
-      <h2 class="section-title reveal">Powered by Coral</h2>
-      <p class="section-sub reveal">Clare is built on top of Coral, the open-source SQL runtime for developers. It treats live APIs as standard database tables, turning complex integrations into simple queries.</p>
+                    <div class="hero-chat" style="margin: 0; flex: 1 1 480px">
+                        <div class="chat-header">
+                            <div
+                                class="chat-avatar"
+                                style="
+                                    background: rgba(107, 70, 193, 0.2);
+                                    overflow: hidden;
+                                    border: 1px solid rgba(167, 139, 250, 0.4);
+                                "
+                            >
+                                <img
+                                    src="./Clare-transparent-background.png"
+                                    alt="Clare"
+                                    style="
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                    "
+                                />
+                            </div>
+                            <div>
+                                <div class="chat-name">Clare</div>
+                                <div class="chat-status">
+                                    Online and fully in her bag
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-msg user">
+                            <span>@Clare daily brief</span>
+                        </div>
+                        <div class="chat-msg clare">
+                            <div class="tag">Clare</div>
+                            <span>
+                                Good morning! Here's what's happening today:<br /><br />
+                                📅 <strong>3 events on your calendar</strong> —
+                                standup at 9am, submission at 1pm.<br />
+                                🐙 <strong>5 open issues</strong> in
+                                withcoral/coral. #1062 has your name on it.<br />
+                                💬 <strong>Slack:</strong> 12 unread in
+                                #general. Someone's spiralling in #incidents.<br /><br />
+                                Want me to prep talking points for the standup?
+                            </span>
+                            <div class="chat-sql">
+                                SQL → SELECT summary FROM google_calendar.events
+                                LIMIT 5;<br />SELECT number, title FROM
+                                github.issues WHERE owner='withcoral' LIMIT 5
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-      <div class="coral-layout">
-        <div class="coral-code-block reveal">
-          <span class="comment">-- Clare asks: "What does my day look like?"</span><br><br>
-          <span class="keyword">SELECT</span> summary, status<br>
-          &nbsp;&nbsp;<span class="keyword">FROM</span> <span class="table">google_calendar.events</span><br>
-          &nbsp;&nbsp;<span class="keyword">LIMIT</span> <span class="string">5</span>;<br><br>
-          <span class="keyword">SELECT</span> number, title, state<br>
-          &nbsp;&nbsp;<span class="keyword">FROM</span> <span class="table">github.issues</span><br>
-          &nbsp;&nbsp;<span class="keyword">WHERE</span> owner=<span class="string">'withcoral'</span><br>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">AND</span> state=<span class="string">'open'</span><br>
-          &nbsp;&nbsp;<span class="keyword">LIMIT</span> <span class="string">5</span>;<br><br>
-          <span class="comment">-- No database setup. No waiting. Just answers.</span>
-        </div>
-        <div class="coral-features reveal">
-          <div class="coral-feature">
-            <span class="coral-check">✦</span>
-            <div>
-              <h4>Connect all your apps</h4>
-              <p>Gather insights from GitHub, Calendar, and Slack in a single request. No messy glue code required.</p>
-            </div>
-          </div>
-          <div class="coral-feature">
-            <span class="coral-check">✦</span>
-            <div>
-              <h4>Auto-discovered schema</h4>
-              <p>Coral scans your tools to map out exactly what data, tables, and columns are ready to be used.</p>
-            </div>
-          </div>
-          <div class="coral-feature">
-            <span class="coral-check">✦</span>
-            <div>
-              <h4>Intelligent caching</h4>
-              <p>Quick replies are supported by a smart caching layer to keep your external API requests fast and lightweight.</p>
-            </div>
-          </div>
-          <div class="coral-feature">
-            <span class="coral-check">✦</span>
-            <div>
-              <h4>Bespoke integrations</h4>
-              <p>Clare includes built-in configurations for services like Google Calendar, optimized specifically for scheduling tasks.</p>
-            </div>
-          </div>
-          <div class="coral-feature">
-            <span class="coral-check">✦</span>
-            <div>
-              <h4>100% Private</h4>
-              <p>Your credentials and queries run entirely in your own environment. Your personal data stays your own.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+            <section class="how" id="how">
+                <div class="section-inner">
+                    <p class="section-label reveal">How it works</p>
+                    <h2 class="section-title reveal">
+                        She's Not magic.<br />Just really
+                        <em
+                            style="
+                                background: linear-gradient(
+                                    135deg,
+                                    #a78bfa,
+                                    #f472b6
+                                );
+                                -webkit-background-clip: text;
+                                -webkit-text-fill-color: transparent;
+                                background-clip: text;
+                                font-style: normal;
+                            "
+                            >good at SQL.</em
+                        >
+                    </h2>
+                    <p class="section-sub reveal">
+                        Clare runs on Coral, an open-source engine that turns
+                        live APIs into SQL tables. No syncing, no pipelines, no
+                        drama. Your tools show up as database tables and Clare
+                        reads them right now.
+                    </p>
+                    <div class="steps">
+                        <div class="step reveal">
+                            <div class="step-num">01</div>
+                            <h3>Just talk to her</h3>
+                            <p>
+                                Say whatever you mean in plain English. No slash
+                                commands, no rigid syntax, no reading a manual.
+                                Clare figures out what you want and gets on with
+                                it.
+                            </p>
+                        </div>
+                        <div class="step reveal">
+                            <div class="step-num">02</div>
+                            <h3>She goes and gets it</h3>
+                            <p>
+                                Clare writes a SQL query and fires it against
+                                your tools in real time. GitHub, calendar, Slack
+                                — sometimes all three at once. No waiting for a
+                                background sync.
+                            </p>
+                        </div>
+                        <div class="step reveal">
+                            <div class="step-num">03</div>
+                            <h3>A proper answer arrives</h3>
+                            <p>
+                                Not a wall of JSON. Not a loading spinner. A
+                                clean, friendly summary, right back in the chat.
+                                Crystal Clare, every time.
+                            </p>
+                        </div>
+                        <div class="step reveal">
+                            <div class="step-num">04</div>
+                            <h3>She takes action too</h3>
+                            <p>
+                                Tell Clare to book a meeting and she puts it
+                                straight on your Google Calendar. No forms, no
+                                clicking around. Just done.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-  <!-- ROADMAP -->
-  <section class="roadmap" id="roadmap">
-    <div class="section-inner">
-      <!--<div class="roadmap-intro reveal">🚧 Cosmic Workshop Status: Very Much Busy</div>-->
-      <p class="section-label reveal">What's Next</p>
-      <h2 class="section-title reveal">Clare is getting an upgrade.<br><em style="color: var(--accent-amber); font-style:normal;">Several of them, actually.</em></h2>
-      <p class="section-sub reveal">We are building fast to expand where Clare can chat and what tools she can connect to. Here is a look at what is coming soon.</p>
+            <section id="powers">
+                <div class="section-inner">
+                    <p class="section-label reveal">
+                        What she brings to the tables
+                    </p>
+                    <h2 class="section-title reveal">Clare's Superpowers</h2>
+                    <p class="section-sub reveal">
+                        Every response is pulled live from your actual tools.
+                        Nothing is stale, nothing is made up. Clare gives you
+                        real data every single time and tells you exactly where
+                        it came from.
+                    </p>
+                    <div class="powers-grid">
+                        <div class="power-card reveal">
+                            <div class="power-icon">🌅</div>
+                            <h3>The Daily Download</h3>
+                            <p>
+                                One message and Clare hands you a crisp rundown
+                                of your calendar, open GitHub issues, and
+                                whatever needs your attention today. Good
+                                morning, indeed.
+                            </p>
+                            <div class="power-tag">
+                                google_calendar JOIN github.issues
+                            </div>
+                        </div>
+                        <div class="power-card reveal">
+                            <div class="power-icon">🐙</div>
+                            <h3>GitHub, but chatty</h3>
+                            <p>
+                                Open issues, stale PRs, sprint blockers. Clare
+                                surfaces what needs your attention without you
+                                opening a single browser tab.
+                            </p>
+                            <div class="power-tag">
+                                github.issues, github.pulls, github.repos
+                            </div>
+                        </div>
+                        <div class="power-card reveal">
+                            <div class="power-icon">📅</div>
+                            <h3>Calendar without the clicking</h3>
+                            <p>
+                                Tell Clare when and what, and she books it. She
+                                can also read your whole day back to you if you
+                                forgot what you agreed to. No judgment from her
+                                end.
+                            </p>
+                            <div class="power-tag">
+                                google_calendar.events (R/W)
+                            </div>
+                        </div>
+                        <div class="power-card reveal">
+                            <div class="power-icon">💬</div>
+                            <h3>Slack without the scroll</h3>
+                            <p>
+                                Missed a channel? Clare skims your Slack and
+                                pulls out the bits that actually matter. The
+                                noise stays behind. The signal comes to you.
+                            </p>
+                            <div class="power-tag">
+                                slack.messages, slack.channels
+                            </div>
+                        </div>
+                        <div class="power-card reveal">
+                            <div class="power-icon">🔍</div>
+                            <h3>She knows what she knows</h3>
+                            <p>
+                                Ask Clare what data she has access to and she
+                                runs a live check right there. No guessing, no
+                                assumed connections. Just an honest answer about
+                                what's wired up.
+                            </p>
+                            <div class="power-tag">
+                                SELECT * FROM coral.tables
+                            </div>
+                        </div>
+                        <div class="power-card reveal">
+                            <div class="power-icon">📱</div>
+                            <h3>One brain, multiple apps</h3>
+                            <p>
+                                The same Clare you ping on Discord shows up in
+                                your WhatsApp DMs and Slack. Different channel,
+                                same sharp assistant. Add her to your workspace
+                                or text her directly.
+                            </p>
+                            <div class="power-tag">
+                                Twilio + discord.js + Slack SDK
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-      <div class="roadmap-divider reveal">New Channels</div>
-      <div class="roadmap-grid">
-        <div class="roadmap-card reveal">
-          <div class="roadmap-icon"><img src="https://cdn.simpleicons.org/telegram/26A5E4" alt="Telegram" width="28" height="28"></div>
-          <h3>Telegram</h3>
-          <p>For everyone who loves Telegram channels. We are bringing Clare to your favorite chat app very soon.</p>
-        </div>
-        <div class="roadmap-card reveal">
-          <div class="roadmap-icon"><img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram" width="28" height="28"></div>
-          <h3>Instagram DMs</h3>
-          <p>Need to check a GitHub issue while browsing your feed? Clare will be there to help you out.</p>
-        </div>
-        <div class="roadmap-card reveal">
-          <div class="roadmap-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#6264A7">
-              <path d="M12.6144 10.9663H23.3343C23.703 10.9663 24 11.2635 24 11.6321V17.5996C24 19.9728 22.0749 21.898 19.7016 21.898H19.6891C17.3159 21.8983 15.3905 19.9734 15.3902 17.6002V11.6394C15.3901 11.2693 15.6874 10.9704 16.0574 10.9702H12.6144V10.9663ZM19.3 0C21.0449 0 22.4574 1.4125 22.4574 3.1574C22.4574 4.9023 21.0449 6.3148 19.3 6.3148C17.5551 6.3148 16.1426 4.9023 16.1426 3.1574C16.1426 1.4125 17.5551 0 19.3 0ZM10.6369 5.53846C12.8153 5.53846 14.5817 7.30491 14.5817 9.48333C14.5817 11.6617 12.8153 13.4282 10.6369 13.4282C8.45847 13.4282 6.69202 11.6617 6.69202 9.48333C6.69202 7.30491 8.45847 5.53846 10.6369 5.53846ZM1.33129 8.01923H13.0478C13.4438 8.01923 13.7647 8.34012 13.7647 8.73606V15.5938C13.7647 18.2867 11.5812 20.4702 8.8883 20.4702H8.87396C6.18112 20.4702 3.99768 18.2867 3.99768 15.5938V8.73606C3.99768 8.34012 4.31857 8.01923 4.71451 8.01923H1.33129Z"/>
-            </svg>
-          </div>
-          <h3>Microsoft Teams</h3>
-          <p>Bringing Clare directly to your workplace chat for easy team-wide scheduling and updates.</p>
-        </div>
-        <div class="roadmap-card reveal">
-          <div class="roadmap-icon"><img src="https://cdn.simpleicons.org/minutemailer/white" alt="Email" width="28" height="28"></div>
-          <h3>Email</h3>
-          <p>Forward or send emails to Clare to trigger smart actions and summarize long threads.</p>
-        </div>
-      </div>
+            <section class="quikdb-section" id="hosting">
+                <div class="section-inner">
+                    <div class="quikdb-badge reveal">
+                        <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        >
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                        </svg>
+                        Hosted on QuikDB Compute
+                    </div>
+                    <p class="section-label reveal">Infrastructure</p>
+                    <h2 class="section-title reveal">
+                        Clare runs on QuikDB.<br /><em
+                            style="
+                                color: var(--accent-cyan);
+                                font-style: normal;
+                            "
+                            >Built in Lagos. Live everywhere.</em
+                        >
+                    </h2>
+                    <p class="section-sub reveal">
+                        Getting Clare from a local Node.js server to a live URL
+                        at
+                        <strong style="color: var(--accent-cyan)"
+                            >clare.quikdb.net</strong
+                        >
+                        took less time than it usually takes to read the AWS
+                        documentation. QuikDB is cloud infrastructure built by
+                        developers who actually want you to ship.
+                    </p>
 
-      <div class="roadmap-divider reveal">New Sources</div>
-      <div class="roadmap-grid">
-        <div class="roadmap-card reveal">
-          <div class="roadmap-icon"><img src="https://cdn.simpleicons.org/gmail/EA4335" alt="Gmail" width="28" height="28"></div>
-          <h3>Gmail</h3>
-          <p>Summarize long email threads and draft quick replies without opening your inbox.</p>
+                    <div class="quikdb-layout">
+                        <div class="reveal">
+                            <div class="quikdb-stats">
+                                <div class="quikdb-stat">
+                                    <div class="quikdb-stat-num">10m</div>
+                                    <div class="quikdb-stat-label">
+                                        From repo to live URL
+                                    </div>
+                                </div>
+                                <div class="quikdb-stat">
+                                    <div class="quikdb-stat-num">SSL</div>
+                                    <div class="quikdb-stat-label">
+                                        Auto-secured, no config
+                                    </div>
+                                </div>
+                                <div class="quikdb-stat">
+                                    <div class="quikdb-stat-num">0</div>
+                                    <div class="quikdb-stat-label">
+                                        YAML files written to deploy
+                                    </div>
+                                </div>
+                                <div class="quikdb-stat">
+                                    <div class="quikdb-stat-num">70%</div>
+                                    <div class="quikdb-stat-label">
+                                        Cheaper than equivalent AWS
+                                    </div>
+                                </div>
+                            </div>
+                            <p
+                                style="
+                                    font-size: 0.85rem;
+                                    color: var(--text-muted);
+                                    line-height: 1.6;
+                                    margin-bottom: 1.5rem;
+                                "
+                            >
+                                QuikDB is community-powered cloud
+                                infrastructure, built right here in Lagos. Clare
+                                is one of many projects running on it — and it
+                                shows. No downtime, no devops headaches, no
+                                invoice that makes you reconsider your career
+                                choices.
+                            </p>
+                            <a
+                                href="https://www.quikdb.com"
+                                target="_blank"
+                                rel="noopener"
+                                class="quikdb-cta"
+                            >
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                >
+                                    <path
+                                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                                    ></path>
+                                    <polyline
+                                        points="15 3 21 3 21 9"
+                                    ></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                Try QuikDB yourself
+                            </a>
+                        </div>
+
+                        <div class="quikdb-features reveal">
+                            <div class="quikdb-feature">
+                                <span class="quikdb-dot">✦</span>
+                                <div>
+                                    <h4>Deploy straight from GitHub</h4>
+                                    <p>
+                                        Connect your repo, push your code, and
+                                        QuikDB handles the rest. Clare's Express
+                                        backend was live in one push with zero
+                                        server configuration.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="quikdb-feature">
+                                <span class="quikdb-dot">✦</span>
+                                <div>
+                                    <h4>Custom domain, no certificate dance</h4>
+                                    <p>
+                                        clare.quikdb.net was up and SSL-secured
+                                        in minutes. QuikDB handles the
+                                        certificate, the DNS, the whole thing.
+                                        You just pick a name.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="quikdb-feature">
+                                <span class="quikdb-dot">✦</span>
+                                <div>
+                                    <h4>Works with your existing stack</h4>
+                                    <p>
+                                        Node.js, Express, Next.js, Flask —
+                                        QuikDB runs it. Clare needed zero config
+                                        changes to go from a Windows laptop to a
+                                        live production server.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="quikdb-feature">
+                                <span class="quikdb-dot">✦</span>
+                                <div>
+                                    <h4>Rollbacks when things go sideways</h4>
+                                    <p>
+                                        Ship fast knowing you can undo it.
+                                        QuikDB keeps your deployment history, so
+                                        a bad push is a one-click rollback, not
+                                        a crisis.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="quikdb-feature">
+                                <span class="quikdb-dot">✦</span>
+                                <div>
+                                    <h4>
+                                        Made in Nigeria, built for the world
+                                    </h4>
+                                    <p>
+                                        QuikDB is Nigerian-built cloud
+                                        infrastructure that punches well above
+                                        its weight. Clare is proof. The whole
+                                        project ran on it from day one.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="coral-section">
+                <div class="section-inner">
+                    <p class="section-label reveal">Under the hood</p>
+                    <h2 class="section-title reveal">Powered by Coral</h2>
+                    <p class="section-sub reveal">
+                        Clare is built on Coral, an open-source SQL runtime that
+                        turns live APIs into database tables. GitHub issues,
+                        calendar events, Slack messages — all queryable with
+                        plain SQL, all in real time.
+                    </p>
+                    <div class="coral-layout">
+                        <div class="coral-code-block reveal">
+                            <span class="comment"
+                                >-- Clare hears: "What does my day look
+                                like?"</span
+                            ><br /><br />
+                            <span class="keyword">SELECT</span> summary,
+                            status<br />
+                            &nbsp;&nbsp;<span class="keyword">FROM</span>
+                            <span class="table">google_calendar.events</span
+                            ><br />
+                            &nbsp;&nbsp;<span class="keyword">LIMIT</span>
+                            <span class="string">5</span>;<br /><br />
+                            <span class="keyword">SELECT</span> number, title,
+                            state<br />
+                            &nbsp;&nbsp;<span class="keyword">FROM</span>
+                            <span class="table">github.issues</span><br />
+                            &nbsp;&nbsp;<span class="keyword">WHERE</span>
+                            owner=<span class="string">'withcoral'</span><br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword"
+                                >AND</span
+                            >
+                            state=<span class="string">'open'</span><br />
+                            &nbsp;&nbsp;<span class="keyword">LIMIT</span>
+                            <span class="string">5</span>;<br /><br />
+                            <span class="comment"
+                                >-- No database setup. No pipelines. Just
+                                answers.</span
+                            >
+                        </div>
+                        <div class="coral-features reveal">
+                            <div class="coral-feature">
+                                <span class="coral-check">✦</span>
+                                <div>
+                                    <h4>Everything in one query</h4>
+                                    <p>
+                                        GitHub, Calendar, and Slack all show up
+                                        as SQL tables. One question, three live
+                                        sources, no glue code required.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="coral-feature">
+                                <span class="coral-check">✦</span>
+                                <div>
+                                    <h4>Auto-discovered schema</h4>
+                                    <p>
+                                        Coral maps out exactly what tables and
+                                        columns are ready to query. Clare always
+                                        knows what she's working with.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="coral-feature">
+                                <span class="coral-check">✦</span>
+                                <div>
+                                    <h4>Smart caching</h4>
+                                    <p>
+                                        Repeated queries hit Coral's cache
+                                        instead of hammering your APIs. Fast
+                                        replies without burning through rate
+                                        limits.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="coral-feature">
+                                <span class="coral-check">✦</span>
+                                <div>
+                                    <h4>
+                                        Hand-rolled Google Calendar connector
+                                    </h4>
+                                    <p>
+                                        Clare ships with a custom Google
+                                        Calendar source spec built for this
+                                        project. Not in Coral's standard
+                                        library. Written from scratch.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="coral-feature">
+                                <span class="coral-check">✦</span>
+                                <div>
+                                    <h4>Your data stays yours</h4>
+                                    <p>
+                                        Queries run in your own environment.
+                                        Clare does not send your credentials or
+                                        data anywhere she shouldn't.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="roadmap" id="roadmap">
+                <div class="section-inner">
+                    <p class="section-label reveal">What's Next</p>
+                    <h2 class="section-title reveal">
+                        Clare is getting an upgrade.<br /><em
+                            style="
+                                color: var(--accent-amber);
+                                font-style: normal;
+                            "
+                            >Several of them, actually.</em
+                        >
+                    </h2>
+                    <p class="section-sub reveal">
+                        We're building fast to expand where Clare can chat and
+                        what tools she can tap into. Here's what's on the way.
+                    </p>
+
+                    <div class="roadmap-divider reveal">New Channels</div>
+                    <div class="roadmap-grid">
+                        <div class="roadmap-card reveal">
+                            <div class="roadmap-icon">
+                                <svg
+                                    fill="#26A5E4"
+                                    width="28"
+                                    height="28"
+                                    style="margin-right: 4px"
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>Telegram</title>
+                                    <path
+                                        d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Telegram</h3>
+                            <p>
+                                Clare is coming to the little paper plane. Same
+                                brain, new inbox.
+                            </p>
+                        </div>
+                        <div class="roadmap-card reveal">
+                            <div class="roadmap-icon">
+                                <svg
+                                    fill="#E4405F"
+                                    width="28"
+                                    height="28"
+                                    style="margin-right: 4px"
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>Instagram</title>
+                                    <path
+                                        d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Instagram DMs</h3>
+                            <p>
+                                Need to check a GitHub issue mid-scroll? Clare
+                                will slide into your DMs.
+                            </p>
+                        </div>
+                        <div class="roadmap-card reveal">
+                            <div class="roadmap-icon">
+                                <svg
+                                    width="28"
+                                    height="28"
+                                    viewBox="0 0 24 24"
+                                    fill="#6264A7"
+                                >
+                                    <path
+                                        d="M12.6144 10.9663H23.3343C23.703 10.9663 24 11.2635 24 11.6321V17.5996C24 19.9728 22.0749 21.898 19.7016 21.898H19.6891C17.3159 21.8983 15.3905 19.9734 15.3902 17.6002V11.6394C15.3901 11.2693 15.6874 10.9704 16.0574 10.9702H12.6144V10.9663ZM19.3 0C21.0449 0 22.4574 1.4125 22.4574 3.1574C22.4574 4.9023 21.0449 6.3148 19.3 6.3148C17.5551 6.3148 16.1426 4.9023 16.1426 3.1574C16.1426 1.4125 17.5551 0 19.3 0ZM10.6369 5.53846C12.8153 5.53846 14.5817 7.30491 14.5817 9.48333C14.5817 11.6617 12.8153 13.4282 10.6369 13.4282C8.45847 13.4282 6.69202 11.6617 6.69202 9.48333C6.69202 7.30491 8.45847 5.53846 10.6369 5.53846ZM1.33129 8.01923H13.0478C13.4438 8.01923 13.7647 8.34012 13.7647 8.73606V15.5938C13.7647 18.2867 11.5812 20.4702 8.8883 20.4702H8.87396C6.18112 20.4702 3.99768 18.2867 3.99768 15.5938V8.73606C3.99768 8.34012 4.31857 8.01923 4.71451 8.01923H13.33129Z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Microsoft Teams</h3>
+                            <p>
+                                Clare is learning to wear a blazer. Enterprise
+                                channels, incoming.
+                            </p>
+                        </div>
+                        <div class="roadmap-card reveal">
+                            <div class="roadmap-icon">
+                                <svg
+                                    fill="white"
+                                    width="28"
+                                    height="28"
+                                    style="margin-right: 4px"
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>Minutemailer</title>
+                                    <path
+                                        d="M17.187 19.181L24 4.755 0 12.386l9.196 1.963.043 4.896 2.759-2.617-2.147-2.076 7.336 4.63z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Email</h3>
+                            <p>
+                                Forward a thread to Clare and she'll tell you
+                                what you actually need to know.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="roadmap-divider reveal">New Sources</div>
+                    <div class="roadmap-grid">
+                        <div class="roadmap-card reveal">
+                            <div class="roadmap-icon">
+                                <svg
+                                    fill="#EA4335"
+                                    width="28"
+                                    height="28"
+                                    style="margin-right: 4px"
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>Gmail</title>
+                                    <path
+                                        d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Gmail</h3>
+                            <p>
+                                Inbox summaries, thread breakdowns, quick
+                                replies. Without opening Gmail once.
+                            </p>
+                        </div>
+                        <div class="roadmap-card reveal">
+                            <div class="roadmap-icon">
+                                <svg
+                                    fill="#4285F4"
+                                    width="28"
+                                    height="28"
+                                    style="margin-right: 4px"
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>Google Drive</title>
+                                    <path
+                                        d="M12.01 1.485c-2.082 0-3.754.02-3.743.047.01.02 1.708 3.001 3.774 6.62l3.76 6.574h3.76c2.081 0 3.753-.02 3.742-.047-.005-.02-1.708-3.001-3.775-6.62l-3.76-6.574zm-4.76 1.73a789.828 789.861 0 0 0-3.63 6.319L0 15.868l1.89 3.298 1.885 3.297 3.62-6.335 3.618-6.33-1.88-3.287C8.1 4.704 7.255 3.22 7.25 3.214zm2.259 12.653-.203.348c-.114.198-.96 1.672-1.88 3.287a423.93 423.948 0 0 1-1.698 2.97c-.01.026 3.24.042 7.222.042h7.244l1.796-3.157c.992-1.734 1.85-3.23 1.906-3.323l.104-.167h-7.249z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Google Drive</h3>
+                            <p>
+                                "Clare, what did we decide in the Q3 doc?"
+                                Coming soon, and honestly overdue.
+                            </p>
+                        </div>
+                        <div class="roadmap-card reveal">
+                            <div class="roadmap-icon">
+                                <svg
+                                    fill="white"
+                                    width="28"
+                                    height="28"
+                                    style="margin-right: 4px"
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>Notion</title>
+                                    <path
+                                        d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Notion</h3>
+                            <p>
+                                Search your workspace, create pages, update
+                                tasks. Clare meets your second brain.
+                            </p>
+                        </div>
+                        <div class="roadmap-card reveal">
+                            <div class="roadmap-icon">
+                                <svg
+                                    fill="#5E6AD2"
+                                    width="28"
+                                    height="28"
+                                    style="margin-right: 4px"
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>Linear</title>
+                                    <path
+                                        d="M2.886 4.18A11.982 11.982 0 0 1 11.99 0C18.624 0 24 5.376 24 12.009c0 3.64-1.62 6.903-4.18 9.105L2.887 4.18ZM1.817 5.626l16.556 16.556c-.524.33-1.075.62-1.65.866L.951 7.277c.247-.575.537-1.126.866-1.65ZM.322 9.163l14.515 14.515c-.71.172-1.443.282-2.195.322L0 11.358a12 12 0 0 1 .322-2.195Zm-.17 4.862 9.823 9.824a12.02 12.02 0 0 1-9.824-9.824Z"
+                                    /></svg
+                                ><svg
+                                    fill="#0052CC"
+                                    width="28"
+                                    height="28"
+                                    style="margin-right: 4px"
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>Jira</title>
+                                    <path
+                                        d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 0-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 0 0 5.215 5.214h2.129v2.058a5.218 5.218 0 0 0 5.215 5.214V6.758a1.001 1.001 0 0 0-1.001-1.001zM23.013 0H11.455a5.215 5.215 0 0 0 5.215 5.215h2.129v2.057A5.215 5.215 0 0 0 24 12.483V1.005A1.001 1.001 0 0 0 23.013 0Z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Linear and Jira</h3>
+                            <p>
+                                Backlog management, issue assignment, sprint
+                                updates — from the chat, not the board.
+                            </p>
+                        </div>
+                        <div class="roadmap-card reveal">
+                            <div class="roadmap-icon">
+                                <svg
+                                    fill="#067A46"
+                                    width="28"
+                                    height="28"
+                                    style="margin-right: 4px"
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>PagerDuty</title>
+                                    <path
+                                        d="M16.965 1.18C15.085.164 13.769 0 10.683 0H3.73v14.55h6.926c2.743 0 4.8-.164 6.61-1.37 1.975-1.303 3.004-3.484 3.004-6.007 0-2.716-1.262-4.896-3.305-5.994zm-5.5 10.326h-4.21V3.113l3.977-.027c3.62-.028 5.43 1.234 5.43 4.128 0 3.113-2.248 4.292-5.197 4.292zM3.73 17.61h3.525V24H3.73Z"
+                                    /></svg
+                                ><svg
+                                    fill="#632CA6"
+                                    width="28"
+                                    height="28"
+                                    style="margin-right: 4px"
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>Datadog</title>
+                                    <path
+                                        d="M19.57 17.04l-1.997-1.316-1.665 2.782-1.937-.567-1.706 2.604.087.82 9.274-1.71-.538-5.794zm-8.649-2.498l1.488-.204c.241.108.409.15.697.223.45.117.97.23 1.741-.16.18-.088.553-.43.704-.625l6.096-1.106.622 7.527-10.444 1.882zm11.325-2.712l-.602.115L20.488 0 .789 2.285l2.427 19.693 2.306-.334c-.184-.263-.471-.581-.96-.989-.68-.564-.44-1.522-.039-2.127.53-1.022 3.26-2.322 3.106-3.956-.056-.594-.15-1.368-.702-1.898-.02.22.017.432.017.432s-.227-.289-.34-.683c-.112-.15-.2-.199-.319-.4-.085.233-.073.503-.073.503s-.186-.437-.216-.807c-.11.166-.137.48-.137.48s-.241-.69-.186-1.062c-.11-.323-.436-.965-.343-2.424.6.421 1.924.321 2.44-.439.171-.251.288-.939-.086-2.293-.24-.868-.835-2.16-1.066-2.651l-.028.02c.122.395.374 1.223.47 1.625.293 1.218.372 1.642.234 2.204-.116.488-.397.808-1.107 1.165-.71.358-1.653-.514-1.713-.562-.69-.55-1.224-1.447-1.284-1.883-.062-.477.275-.763.445-1.153-.243.07-.514.192-.514.192s.323-.334.722-.624c.165-.109.262-.178.436-.323a9.762 9.762 0 0 0-.456.003s.42-.227.855-.392c-.318-.014-.623-.003-.623-.003s.937-.419 1.678-.727c.509-.208 1.006-.147 1.286.257.367.53.752.817 1.569.996.501-.223.653-.337 1.284-.509.554-.61.99-.688.99-.688s-.216.198-.274.51c.314-.249.66-.455.66-.455s-.134.164-.259.426l.03.043c.366-.22.797-.394.797-.394s-.123.156-.268.358c.277-.002.838.012 1.056.037 1.285.028 1.552-1.374 2.045-1.55.618-.22.894-.353 1.947.68.903.888 1.609 2.477 1.259 2.833-.294.295-.874-.115-1.516-.916a3.466 3.466 0 0 1-.716-1.562 1.533 1.533 0 0 0-.497-.85s.23.51.23.96c0 .246.03 1.165.424 1.68-.039.076-.057.374-.1.43-.458-.554-1.443-.95-1.604-1.067.544.445 1.793 1.468 2.273 2.449.453.927.186 1.777.416 1.997.065.063.976 1.197 1.15 1.767.306.994.019 2.038-.381 2.685l-1.117.174c-.163-.045-.273-.068-.42-.153.08-.143.241-.5.243-.572l-.063-.111c-.348.492-.93.97-1.414 1.245-.633.359-1.363.304-1.838.156-1.348-.415-2.623-1.327-2.93-1.566 0 0-.01.191.048.234.34.383 1.119 1.077 1.872 1.56l-1.605.177.759 5.908c-.337.048-.39.071-.757.124-.325-1.147-.946-1.895-1.624-2.332-.599-.384-1.424-.47-2.214-.314l-.05.059a2.851 2.851 0 0 1 1.863.444c.654.413 1.181 1.481 1.375 2.124.248.822.42 1.7-.248 2.632-.476.662-1.864 1.028-2.986.237.3.481.705.876 1.25.95.809.11 1.577-.03 2.106-.574.452-.464.69-1.434.628-2.456l.714-.104.258 1.834 11.827-1.424zM15.05 6.848c-.034.075-.085.125-.007.37l.004.014.013.032.032.073c.14.287.295.558.552.696.067-.011.136-.019.207-.023.242-.01.395.028.492.08.009-.048.01-.119.005-.222-.018-.364.072-.982-.626-1.308-.264-.122-.634-.084-.757.068a.302.302 0 0 1 .058.013c.186.066.06.13.027.207m1.958 3.392c-.092-.05-.52-.03-.821.005-.574.068-1.193.267-1.328.372-.247.191-.135.523.047.66.511.382.96.638 1.432.575.29-.038.546-.497.728-.914.124-.288.124-.598-.058-.698m-5.077-2.942c.162-.154-.805-.355-1.556.156-.554.378-.571 1.187-.041 1.646.053.046.096.078.137.104a4.77 4.77 0 0 1 1.396-.412c.113-.125.243-.345.21-.745-.044-.542-.455-.456-.146-.749"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>PagerDuty and Datadog</h3>
+                            <p>
+                                Alert context and system status without leaving
+                                your conversation when things break.
+                            </p>
+                        </div>
+                        <div class="roadmap-card reveal">
+                            <div class="roadmap-icon">🧠</div>
+                            <h3>Persistent Memory</h3>
+                            <p>
+                                Clare will remember your team names, your
+                                preferences, and that you hate standups before
+                                9am.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="gateway" id="gateway">
+                <div class="section-inner">
+                    <p class="section-label reveal">Get started</p>
+                    <h2 class="section-title reveal">
+                        Two doors.<br />Same Clare.
+                    </h2>
+                    <p class="section-sub reveal" style="margin: 0 auto">
+                        Pick the app you're already in. Clare works exactly the
+                        same on both — she just dresses differently for each
+                        occasion.
+                    </p>
+                    <div class="gateway-cards">
+                        <a
+                            href="https://discord.com/oauth2/authorize?client_id=1509967801291509781&permissions=8&integration_type=0&scope=bot"
+                            class="gateway-card discord reveal"
+                        >
+                            <div class="gateway-card-icon">
+                                <svg
+                                    width="40"
+                                    height="40"
+                                    viewBox="0 0 24 24"
+                                    fill="white"
+                                >
+                                    <path
+                                        d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Clare on Discord</h3>
+                            <p>
+                                Add Clare to your server and mention her in any
+                                channel. Great for team queries, sprint updates,
+                                and general chaos management.
+                            </p>
+                            <span class="gateway-cta">Add to Server</span>
+                        </a>
+                        <a
+                            href="https://wa.me/14155238886"
+                            class="gateway-card whatsapp reveal"
+                        >
+                            <div class="gateway-card-icon">
+                                <svg
+                                    width="40"
+                                    height="40"
+                                    viewBox="0 0 24 24"
+                                    fill="white"
+                                >
+                                    <path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Clare on WhatsApp</h3>
+                            <p>
+                                Message Clare directly from your phone. Great
+                                for personal scheduling, quick GitHub checks,
+                                and pretending you have a personal assistant.
+                                (You do.)
+                            </p>
+                            <span class="gateway-cta">Start a Chat</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <div class="footer-inner">
+                    <div class="footer-logo">Clare</div>
+                    <div class="footer-tagline">
+                        She answers to Clare. She answers to everything,
+                        actually.
+                    </div>
+                    <div class="footer-links">
+                        <a href="https://github.com/Vachilla64/Clare">GitHub</a>
+                        <a href="https://withcoral.com">Built with Coral</a>
+                        <a href="https://www.quikdb.com">Hosted on QuikDB</a>
+                        <a href="#how">How it works</a>
+                        <a href="#roadmap">Roadmap</a>
+                    </div>
+                    <div class="footer-copy">
+                        © 2026 Clare. Built solo with 💜 by Valentine in Lekki.
+                    </div>
+                    <div class="footer-pun">
+                        Need help with your calendar, GitHub, or Slack? Just
+                        ask. She's always here and she genuinely enjoys it.
+                    </div>
+                </div>
+            </footer>
         </div>
-        <div class="roadmap-card reveal">
-          <div class="roadmap-icon"><img src="https://cdn.simpleicons.org/googledrive/4285F4" alt="Google Drive" width="28" height="28"></div>
-          <h3>Google Drive</h3>
-          <p>Search through spreadsheets and summarize documents instantly. Ask Clare what was decided in your last team doc.</p>
-        </div>
-        <div class="roadmap-card reveal">
-          <div class="roadmap-icon"><img src="https://cdn.simpleicons.org/notion/white" alt="Notion" width="28" height="28"></div>
-          <h3>Notion</h3>
-          <p>Search your workspaces, write new notes, and keep your project boards up to date from the chat.</p>
-        </div>
-        <div class="roadmap-card reveal">
-          <div class="roadmap-icon"><img src="https://cdn.simpleicons.org/linear/5E6AD2" alt="Linear" width="28" height="28" style="margin-right: 4px;"><img src="https://cdn.simpleicons.org/jira/0052CC" alt="Jira" width="28" height="28"></div>
-          <h3>Linear & Jira</h3>
-          <p>Manage your backlog and assign issues without leaving your conversations.</p>
-        </div>
-        <div class="roadmap-card reveal">
-          <div class="roadmap-icon"><img src="https://cdn.simpleicons.org/pagerduty/067A46" alt="PagerDuty" width="28" height="28" style="margin-right: 4px;"><img src="https://cdn.simpleicons.org/datadog/632CA6" alt="Datadog" width="28" height="28"></div>
-          <h3>PagerDuty & Datadog</h3>
-          <p>Get real-time alert notifications and look up system status when a server goes down.</p>
-        </div>
-        <div class="roadmap-card reveal">
-          <div class="roadmap-icon">🧠</div>
-          <h3>Persistent Memory</h3>
-          <p>Clare will remember your project names, scheduling preferences, and favorite workspaces.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- GATEWAY -->
-  <section class="gateway" id="gateway">
-    <div class="section-inner">
-      <p class="section-label reveal mb-20">Get started</p>
-      <h2 class="section-title reveal">Meet Clare.<br>She's ready to chat.</h2>
-      <p class="section-sub reveal" style="margin: 0 auto 0;">Choose your preferred chat app. Clare is ready to jump into your server or your DMs and start helping out immediately.</p>
-      <div class="gateway-cards">
-        <a href="https://discord.com/oauth2/authorize?client_id=1509967801291509781&permissions=8&integration_type=0&scope=bot" class="gateway-card discord reveal">
-          <div class="gateway-card-icon">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="white"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-          </div>
-          <h3>Clare on Discord</h3>
-          <p>Perfect for channels. Add Clare to your server and mention her to query your team's stack.</p>
-          <span class="gateway-cta">Join the Server →</span>
-        </a>
-        <a href="https://wa.me/14155238886" class="gateway-card whatsapp reveal">
-          <div class="gateway-card-icon">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-          </div>
-          <h3>Clare on WhatsApp</h3>
-          <p>Perfect for solo use. Send Clare a WhatsApp message and manage your day on the go.</p>
-          <span class="gateway-cta">Start a Chat →</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-logo">Clare</div>
-      <div class="footer-tagline">The AI teammate you'll actually enjoy chatting with.</div>
-      <div class="footer-links">
-        <a href="https://github.com/Vachilla64/Clare">GitHub</a>
-        <a href="https://withcoral.com">Built with Coral</a>
-        <a href="#how">How it works</a>
-        <a href="#roadmap">Roadmap</a>
-      </div>
-      <div class="footer-copy">© 2026 Clare. Built with 💜 by Valentine and Team Squeryl.</div>
-      <div class="footer-pun">Need a hand with your calendar, GitHub, or Slack? Just call Clare. She is always online and ready to help.</div>
-    </div>
-  </footer>
-
-</div>
-
-<script>
-  // Generate stars
-  const starsContainer = document.getElementById('stars')
-  for (let i = 0; i < 120; i++) {
-    const star = document.createElement('div')
-    star.classList.add('star')
-    const size = Math.random() * 2 + 1
-    star.style.cssText = `
-      width: ${size}px; height: ${size}px;
-      left: ${Math.random() * 100}%;
-      top: ${Math.random() * 100}%;
-      animation-duration: ${2 + Math.random() * 4}s;
-      animation-delay: ${Math.random() * 4}s;
-    `
-    starsContainer.appendChild(star)
-  }
-
-  // Parallax on mouse move
-  document.addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 2
-    const y = (e.clientY / window.innerHeight - 0.5) * 2
-    document.querySelectorAll('.orb').forEach((orb, i) => {
-      const depth = (i + 1) * 8
-      orb.style.transform = `translate(${x * depth}px, ${y * depth}px) scale(1)`
-    })
-  })
-
-  // Scroll parallax for orbs and bg image
-  window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY
-    document.querySelectorAll('.orb').forEach((orb, i) => {
-      const speed = (i + 1) * 0.15
-      orb.style.transform = `translateY(${scrolled * speed}px)`
-    })
-    const bgLayer = document.querySelector('.bg-image-layer')
-    if (bgLayer) {
-      bgLayer.style.transform = `translateY(${scrolled * 0.3}px)`
-      bgLayer.style.opacity = Math.max(0, 0.30 - (scrolled / 2500))
-    }
-  }, { passive: true })
-
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 60)
-        observer.unobserve(entry.target)
-      }
-    })
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
-</script>
-</body>
+        <script>
+            const starsContainer = document.getElementById("stars");
+            for (let i = 0; i < 120; i++) {
+                const star = document.createElement("div");
+                star.classList.add("star");
+                const size = Math.random() * 2 + 1;
+                star.style.cssText = `width:${size}px;height:${size}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-duration:${2 + Math.random() * 4}s;animation-delay:${Math.random() * 4}s;`;
+                starsContainer.appendChild(star);
+            }
+            document.addEventListener("mousemove", (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 2;
+                const y = (e.clientY / window.innerHeight - 0.5) * 2;
+                document.querySelectorAll(".orb").forEach((orb, i) => {
+                    const depth = (i + 1) * 8;
+                    orb.style.transform = `translate(${x * depth}px,${y * depth}px) scale(1)`;
+                });
+            });
+            window.addEventListener(
+                "scroll",
+                () => {
+                    const scrolled = window.scrollY;
+                    document.querySelectorAll(".orb").forEach((orb, i) => {
+                        orb.style.transform = `translateY(${scrolled * (i + 1) * 0.15}px)`;
+                    });
+                    const bgLayer = document.querySelector(".bg-image-layer");
+                    if (bgLayer) {
+                        bgLayer.style.transform = `translateY(${scrolled * 0.3}px)`;
+                        bgLayer.style.opacity = Math.max(
+                            0,
+                            0.3 - scrolled / 2500,
+                        );
+                    }
+                },
+                { passive: true },
+            );
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry, i) => {
+                        if (entry.isIntersecting) {
+                            setTimeout(
+                                () => entry.target.classList.add("visible"),
+                                i * 60,
+                            );
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+            );
+            document
+                .querySelectorAll(".reveal")
+                .forEach((el) => observer.observe(el));
+        </script>
+    </body>
 </html>
