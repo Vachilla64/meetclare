@@ -362,7 +362,8 @@
                 background: rgba(107, 70, 193, 0.3);
             }
             .windows-download-wrapper {
-                margin-top: 1.5rem;
+                margin-top: 1rem;
+                margin-bottom: 2rem;
                 display: flex;
                 justify-content: center;
                 width: 100%;
@@ -370,46 +371,31 @@
             .windows-download-btn {
                 display: inline-flex;
                 align-items: center;
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: #5865f2;
+                border: none;
                 border-radius: 100px;
-                padding: 0.6rem;
+                padding: 1rem 2rem;
                 color: white;
                 text-decoration: none;
-                overflow: hidden;
-                max-width: 44px;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                font-size: 1.1rem;
+                transition: all 0.2s;
                 white-space: nowrap;
-                box-sizing: border-box;
+                box-shadow: 0 8px 24px rgba(88, 101, 242, 0.3);
             }
             .windows-download-btn:hover {
-                max-width: 280px;
-                background: rgba(0, 120, 212, 0.15);
-                border-color: rgba(0, 120, 212, 0.4);
-                box-shadow: 0 0 20px rgba(0, 120, 212, 0.4);
+                transform: translateY(-2px);
+                box-shadow: 0 12px 32px rgba(88, 101, 242, 0.5);
+                background: #4752c4;
             }
             .windows-icon {
-                width: 24px;
-                height: 24px;
+                width: 28px;
+                height: 28px;
                 flex-shrink: 0;
-                fill: #00a4ef;
-                filter: drop-shadow(0 0 4px rgba(0, 164, 239, 0.4));
-            }
-            .windows-download-btn:hover .windows-icon {
-                filter: drop-shadow(0 0 8px rgba(0, 164, 239, 0.8));
+                fill: white;
+                margin-right: 12px;
             }
             .windows-text {
-                font-weight: 600;
-                margin-left: 12px;
-                margin-right: 12px;
-                opacity: 0;
-                transform: translateX(-10px);
-                transition: all 0.3s ease;
-            }
-            .windows-download-btn:hover .windows-text {
-                opacity: 1;
-                transform: translateX(0);
-                transition-delay: 0.1s;
+                font-weight: 700;
             }
             .hero-chat {
                 background: rgba(22, 13, 46, 0.8);
@@ -730,118 +716,7 @@
                 color: var(--text-secondary);
                 line-height: 1.5;
             }
-            /* QUIKDB */
-            .quikdb-section {
-                background: rgba(9, 4, 22, 0.9);
-                border-top: 1px solid rgba(34, 211, 238, 0.1);
-                border-bottom: 1px solid rgba(34, 211, 238, 0.1);
-            }
-            .quikdb-badge {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.6rem;
-                background: rgba(34, 211, 238, 0.07);
-                border: 1px solid rgba(34, 211, 238, 0.2);
-                border-radius: 100px;
-                padding: 0.4rem 1rem;
-                font-size: 0.8rem;
-                color: var(--accent-cyan);
-                margin-bottom: 1.5rem;
-            }
-            .quikdb-layout {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 4rem;
-                align-items: start;
-                margin-top: 2.5rem;
-            }
-            .quikdb-stats {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1rem;
-                margin-bottom: 2rem;
-            }
-            .quikdb-stat {
-                padding: 2rem 1.5rem;
-                background: rgba(34, 211, 238, 0.04);
-                border: 1px solid rgba(34, 211, 238, 0.12);
-                border-radius: 14px;
-                transition:
-                    border-color 0.2s,
-                    transform 0.2s;
-            }
-            .quikdb-stat:hover {
-                border-color: rgba(34, 211, 238, 0.3);
-                transform: translateY(-2px);
-            }
-            .quikdb-stat-num {
-                font-family: var(--font-display);
-                font-size: 1.8rem;
-                font-weight: 800;
-                color: var(--accent-cyan);
-                line-height: 1;
-                margin-bottom: 0.3rem;
-            }
-            .quikdb-stat-label {
-                font-size: 0.78rem;
-                color: var(--text-muted);
-                line-height: 1.4;
-            }
-            .quikdb-cta {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.5rem;
-                background: rgba(34, 211, 238, 0.08);
-                border: 1px solid rgba(34, 211, 238, 0.25);
-                color: var(--accent-cyan);
-                padding: 0.7rem 1.4rem;
-                border-radius: 100px;
-                font-size: 0.875rem;
-                font-weight: 600;
-                text-decoration: none;
-                transition:
-                    background 0.2s,
-                    transform 0.2s;
-            }
-            .quikdb-cta:hover {
-                background: rgba(34, 211, 238, 0.18);
-                transform: translateY(-2px);
-            }
-            .quikdb-features {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-            }
-            .quikdb-feature {
-                display: flex;
-                gap: 1rem;
-                align-items: flex-start;
-                padding: 1.1rem;
-                border-radius: 12px;
-                border: 1px solid rgba(34, 211, 238, 0.08);
-                background: rgba(34, 211, 238, 0.02);
-                transition: border-color 0.2s;
-            }
-            .quikdb-feature:hover {
-                border-color: rgba(34, 211, 238, 0.25);
-            }
-            .quikdb-dot {
-                color: var(--accent-cyan);
-                font-size: 1rem;
-                margin-top: 0.1rem;
-                flex-shrink: 0;
-            }
-            .quikdb-feature h4 {
-                font-family: var(--font-display);
-                font-size: 0.9rem;
-                font-weight: 700;
-                margin-bottom: 0.2rem;
-            }
-            .quikdb-feature p {
-                font-size: 0.82rem;
-                color: var(--text-secondary);
-                line-height: 1.5;
-            }
+            
             /* ROADMAP */
             .roadmap {
                 background: rgba(22, 13, 46, 0.4);
@@ -1091,8 +966,7 @@
                 .nav-links {
                     display: none;
                 }
-                .coral-layout,
-                .quikdb-layout {
+                .coral-layout {
                     grid-template-columns: 1fr;
                     gap: 2rem;
                 }
@@ -1288,8 +1162,8 @@
                 <div class="nav-links">
                     <a href="#how">How it works</a>
                     <a href="#powers">Powers</a>
-                    <a href="#hosting">Hosting</a>
                     <a href="#roadmap">Roadmap</a>
+                    <a href="#contact">Contact</a>
                     <a
                         href="https://github.com/Vachilla64/ClareAgent"
                         class="nav-cta"
@@ -1319,7 +1193,25 @@
                     Instead of opening seven tabs and feeling a growing sense of
                     dread, you just send her a message. That's genuinely it.
                 </p>
-                <div class="hero-ctas">
+                <div class="windows-download-wrapper reveal">
+                    <a
+                        href="https://github.com/Vachilla64/ClareTops/releases/latest/download/clare.exe"
+                        download="clare.exe"
+                        class="windows-download-btn"
+                    >
+                        <svg
+                            class="windows-icon"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M0 3.449L9.75 2.1v9.181H0V3.45zm10.95-1.57L24 0v11.04H10.95V1.88zm0 10.33H24V24l-13.05-1.83V12.21zm-1.2 1.01H0v7.62l9.75-1.34V13.22z"
+                            />
+                        </svg>
+                        <span class="windows-text">Download for Windows</span>
+                    </a>
+                </div>
+<div class="hero-ctas">
                     <a
                         href="https://discord.gg/vkXWZ2fAQ"
                         target="_blank"
@@ -1400,24 +1292,7 @@
                         View on GitHub
                     </a>
                 </div>
-                <div class="windows-download-wrapper reveal">
-                    <a
-                        href="https://github.com/Vachilla64/ClareTops/releases/latest/download/clare.exe"
-                        download="clare.exe"
-                        class="windows-download-btn"
-                    >
-                        <svg
-                            class="windows-icon"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                        >
-                            <path
-                                d="M0 3.449L9.75 2.1v9.181H0V3.45zm10.95-1.57L24 0v11.04H10.95V1.88zm0 10.33H24V24l-13.05-1.83V12.21zm-1.2 1.01H0v7.62l9.75-1.34V13.22z"
-                            />
-                        </svg>
-                        <span class="windows-text">Download for Windows</span>
-                    </a>
-                </div>
+                
 
                 <img
                     src="./Clare-transparent-background.png"
@@ -1741,178 +1616,7 @@
                 </div>
             </section>
 
-            <section class="quikdb-section" id="hosting">
-                <div class="section-inner">
-                    <div class="quikdb-badge reveal">
-                        <svg
-                            width="14"
-                            height="14"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2.5"
-                        >
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                        </svg>
-                        Hosted on QuikDB Compute
-                    </div>
-                    <p class="section-label reveal">Infrastructure</p>
-                    <h2 class="section-title reveal">
-                        Clare runs on QuikDB.<br /><em
-                            style="
-                                color: var(--accent-cyan);
-                                font-style: normal;
-                            "
-                            >Built in Lagos. Live everywhere.</em
-                        >
-                    </h2>
-                    <p class="section-sub reveal">
-                        Getting Clare from a local Node.js server to a live URL
-                        at
-                        <strong style="color: var(--accent-cyan)"
-                            >clare.quikdb.net</strong
-                        >
-                        took less time than it usually takes to read the AWS
-                        documentation. QuikDB is cloud infrastructure built by
-                        developers who actually want you to ship.
-                    </p>
-
-                    <div class="quikdb-layout">
-                        <div class="reveal">
-                            <div class="quikdb-stats">
-                                <div class="quikdb-stat">
-                                    <div class="quikdb-stat-num">10m</div>
-                                    <div class="quikdb-stat-label">
-                                        From repo to live URL
-                                    </div>
-                                </div>
-                                <div class="quikdb-stat">
-                                    <div class="quikdb-stat-num">SSL</div>
-                                    <div class="quikdb-stat-label">
-                                        Auto-secured, no config
-                                    </div>
-                                </div>
-                                <div class="quikdb-stat">
-                                    <div class="quikdb-stat-num">0</div>
-                                    <div class="quikdb-stat-label">
-                                        YAML files written to deploy
-                                    </div>
-                                </div>
-                                <div class="quikdb-stat">
-                                    <div class="quikdb-stat-num">70%</div>
-                                    <div class="quikdb-stat-label">
-                                        Cheaper than equivalent AWS
-                                    </div>
-                                </div>
-                            </div>
-                            <p
-                                style="
-                                    font-size: 0.85rem;
-                                    color: var(--text-muted);
-                                    line-height: 1.6;
-                                    margin-bottom: 1.5rem;
-                                "
-                            >
-                                QuikDB is community-powered cloud
-                                infrastructure, built right here in Lagos. Clare
-                                is one of many projects running on it — and it
-                                shows. No downtime, no devops headaches, no
-                                invoice that makes you reconsider your career
-                                choices.
-                            </p>
-                            <a
-                                href="https://www.quikdb.com"
-                                target="_blank"
-                                rel="noopener"
-                                class="quikdb-cta"
-                            >
-                                <svg
-                                    width="14"
-                                    height="14"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2.5"
-                                >
-                                    <path
-                                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
-                                    ></path>
-                                    <polyline
-                                        points="15 3 21 3 21 9"
-                                    ></polyline>
-                                    <line x1="10" y1="14" x2="21" y2="3"></line>
-                                </svg>
-                                Try QuikDB yourself
-                            </a>
-                        </div>
-
-                        <div class="quikdb-features reveal">
-                            <div class="quikdb-feature">
-                                <span class="quikdb-dot">✦</span>
-                                <div>
-                                    <h4>Deploy straight from GitHub</h4>
-                                    <p>
-                                        Connect your repo, push your code, and
-                                        QuikDB handles the rest. Clare's Express
-                                        backend was live in one push with zero
-                                        server configuration.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="quikdb-feature">
-                                <span class="quikdb-dot">✦</span>
-                                <div>
-                                    <h4>Custom domain, no certificate dance</h4>
-                                    <p>
-                                        clare.quikdb.net was up and SSL-secured
-                                        in minutes. QuikDB handles the
-                                        certificate, the DNS, the whole thing.
-                                        You just pick a name.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="quikdb-feature">
-                                <span class="quikdb-dot">✦</span>
-                                <div>
-                                    <h4>Works with your existing stack</h4>
-                                    <p>
-                                        Node.js, Express, Next.js, Flask —
-                                        QuikDB runs it. Clare needed zero config
-                                        changes to go from a Windows laptop to a
-                                        live production server.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="quikdb-feature">
-                                <span class="quikdb-dot">✦</span>
-                                <div>
-                                    <h4>Rollbacks when things go sideways</h4>
-                                    <p>
-                                        Ship fast knowing you can undo it.
-                                        QuikDB keeps your deployment history, so
-                                        a bad push is a one-click rollback, not
-                                        a crisis.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="quikdb-feature">
-                                <span class="quikdb-dot">✦</span>
-                                <div>
-                                    <h4>
-                                        Made in Nigeria, built for the world
-                                    </h4>
-                                    <p>
-                                        QuikDB is Nigerian-built cloud
-                                        infrastructure that punches well above
-                                        its weight. Clare is proof. The whole
-                                        project ran on it from day one.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            
 
             <section class="coral-section">
                 <div class="section-inner">
@@ -2417,6 +2121,24 @@
                 </div>
             </section>
 
+            <section id="contact" class="reveal" style="background: rgba(22, 13, 46, 0.5); border-top: 1px solid rgba(107, 70, 193, 0.15);">
+                <div class="section-inner" style="text-align: center;">
+                    <div class="section-label">Get in Touch</div>
+                    <h2 class="section-title">Contact Me</h2>
+                    <p class="section-sub" style="margin: 0 auto;">
+                        Feel free to reach out via email or check out my work on GitHub.
+                    </p>
+                    <div class="hero-ctas" style="margin-top: 2rem; margin-bottom: 0; justify-content: center;">
+                        <a href="mailto:alfredvachila@gmail.com" class="btn btn-slack">
+                            <span style="font-size: 1.2rem; margin-right: 0.5rem;">✉️</span> Email Me
+                        </a>
+                        <a href="https://github.com/Vachilla64" class="btn btn-ghost" target="_blank">
+                            <span style="font-size: 1.2rem; margin-right: 0.5rem;">💻</span> GitHub
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             <footer>
                 <div class="footer-inner">
                     <div class="footer-logo">Clare</div>
@@ -2427,7 +2149,6 @@
                     <div class="footer-links">
                         <a href="https://github.com/Vachilla64/Clare">GitHub</a>
                         <a href="https://withcoral.com">Built with Coral</a>
-                        <a href="https://www.quikdb.com">Hosted on QuikDB</a>
                         <a href="#how">How it works</a>
                         <a href="#roadmap">Roadmap</a>
                     </div>

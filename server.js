@@ -123,6 +123,11 @@ app.get("/api/auth/discord/callback", async (req, res) => {
 
 // QuikDB will inject the PORT variable automatically
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Clare frontend live on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Clare frontend live on port ${PORT}`);
+  });
+}
+
+// Export the app for Vercel Serverless
+module.exports = app;
