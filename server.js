@@ -7,9 +7,6 @@ const SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID;
 const SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET;
 const SLACK_APP_TOKEN = process.env.SLACK_APP_TOKEN;
 
-const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID;
-const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET;
-
 // Serve all your static files (index.html, images)
 app.use(express.static(__dirname));
 
@@ -64,60 +61,6 @@ app.get("/api/auth/slack/callback", async (req, res) => {
   } catch (error) {
     console.error("Error during Slack callback:", error);
     res.status(500).send("Internal server error during Slack callback");
-  }
-});
-
-// --- Discord OAuth ---
-app.get("/api/auth/discord", (req, res) => {
-  const localPort = req.query.localPort;
-  if (!localPort) {
-    return res.status(400).send("Missing localPort parameter");
-  }
-  // Setting redirect_uri may be necessary for Discord, constructing it based on the host
-  const redirectUri = encodeURIComponent(`${req.protocol}://${req.get('host')}/api/auth/discord/callback`);
-  const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&permissions=8&scope=bot&response_type=code&redirect_uri=${redirectUri}&state=${localPort}`;
-  res.redirect(authUrl);
-});
-
-app.get("/api/auth/discord/callback", async (req, res) => {
-  const { code, state } = req.query;
-  const localPort = state;
-
-  if (!code || !localPort) {
-    return res.status(400).send("Missing code or state parameter");
-  }
-
-  try {
-    const redirectUri = `${req.protocol}://${req.get('host')}/api/auth/discord/callback`;
-
-    const params = new URLSearchParams();
-    params.append('client_id', DISCORD_CLIENT_ID);
-    params.append('client_secret', DISCORD_CLIENT_SECRET);
-    params.append('grant_type', 'authorization_code');
-    params.append('code', code);
-    params.append('redirect_uri', redirectUri);
-
-    const response = await fetch("https://discord.com/api/oauth2/token", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: params
-    });
-
-    const data = await response.json();
-
-    if (data.error) {
-      console.error("Discord OAuth Error:", data);
-      return res.status(500).send(`Discord OAuth failed: ${data.error_description || data.error}`);
-    }
-
-    const botToken = data.access_token;
-
-    res.redirect(`http://localhost:${localPort}/auth/discord/callback?token=${botToken}`);
-  } catch (error) {
-    console.error("Error during Discord callback:", error);
-    res.status(500).send("Internal server error during Discord callback");
   }
 });
 
