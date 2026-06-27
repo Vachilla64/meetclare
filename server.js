@@ -7,6 +7,12 @@ const SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID;
 const SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET;
 const SLACK_APP_TOKEN = process.env.SLACK_APP_TOKEN;
 
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
 // Serve all your static files (index.html, images)
 app.use(express.static(__dirname));
 
@@ -61,6 +67,103 @@ app.get("/api/auth/slack/callback", async (req, res) => {
   } catch (error) {
     console.error("Error during Slack callback:", error);
     res.status(500).send("Internal server error during Slack callback");
+  }
+});
+
+// --- GitHub OAuth ---
+app.get("/api/auth/github", (req, res) => {
+  const localPort = req.query.localPort;
+  if (!localPort) {
+    return res.status(400).send("Missing localPort parameter");
+  }
+  const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&state=${localPort}&scope=repo,read:org,user`;
+  res.redirect(authUrl);
+});
+
+app.get("/api/auth/github/callback", async (req, res) => {
+  const { code, state } = req.query;
+  const localPort = state;
+
+  if (!code || !localPort) {
+    return res.status(400).send("Missing code or state parameter");
+  }
+
+  try {
+    const response = await fetch("https://github.com/login/oauth/access_token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        client_id: GITHUB_CLIENT_ID,
+        client_secret: GITHUB_CLIENT_SECRET,
+        code
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.error) {
+      console.error("GitHub OAuth Error:", data);
+      return res.status(500).send(`GitHub OAuth failed: ${data.error_description || data.error}`);
+    }
+
+    const accessToken = data.access_token;
+    res.redirect(`http://localhost:${localPort}/auth/github/callback?token=${accessToken}`);
+  } catch (error) {
+    console.error("Error during GitHub callback:", error);
+    res.status(500).send("Internal server error during GitHub callback");
+  }
+});
+
+// --- Google Calendar OAuth ---
+app.get("/api/auth/gcal", (req, res) => {
+  const localPort = req.query.localPort;
+  if (!localPort) {
+    return res.status(400).send("Missing localPort parameter");
+  }
+  const redirectUri = "https://meetclare.vercel.app/api/auth/gcal/callback";
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=https://www.googleapis.com/auth/calendar.events&access_type=offline&prompt=consent&state=${localPort}`;
+  res.redirect(authUrl);
+});
+
+app.get("/api/auth/gcal/callback", async (req, res) => {
+  const { code, state } = req.query;
+  const localPort = state;
+
+  if (!code || !localPort) {
+    return res.status(400).send("Missing code or state parameter");
+  }
+
+  try {
+    const redirectUri = "https://meetclare.vercel.app/api/auth/gcal/callback";
+    const response = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        client_id: GOOGLE_CLIENT_ID,
+        client_secret: GOOGLE_CLIENT_SECRET,
+        code,
+        grant_type: "authorization_code",
+        redirect_uri: redirectUri
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.error) {
+      console.error("Google OAuth Error:", data);
+      return res.status(500).send(`Google OAuth failed: ${data.error_description || data.error}`);
+    }
+
+    const refreshToken = data.refresh_token;
+    res.redirect(`http://localhost:${localPort}/auth/gcal/callback?token=${refreshToken}`);
+  } catch (error) {
+    console.error("Error during Google callback:", error);
+    res.status(500).send("Internal server error during Google callback");
   }
 });
 
