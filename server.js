@@ -117,27 +117,40 @@ app.get("/api/auth/github/callback", async (req, res) => {
   }
 });
 
-// --- Google Calendar OAuth ---
-app.get("/api/auth/gcal", (req, res) => {
+// --- Google Unified OAuth (Calendar, Gmail, Drive, Sheets) ---
+app.get("/api/auth/google", (req, res) => {
   const localPort = req.query.localPort;
+  const service = req.query.service || "gcal";
   if (!localPort) {
     return res.status(400).send("Missing localPort parameter");
   }
-  const redirectUri = "https://meetclare.vercel.app/api/auth/gcal/callback";
-  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=https://www.googleapis.com/auth/calendar.events&access_type=offline&prompt=consent&state=${localPort}`;
+
+  const scopeMap = {
+    gcal: "https://www.googleapis.com/auth/calendar",
+    gmail: "https://www.googleapis.com/auth/gmail.modify",
+    drive: "https://www.googleapis.com/auth/drive",
+    sheets: "https://www.googleapis.com/auth/spreadsheets"
+  };
+
+  const scope = scopeMap[service] || scopeMap.gcal;
+  const redirectUri = "https://meetclare.vercel.app/api/auth/google/callback";
+  
+  // include_granted_scopes=true ensures incremental authorization retains previous scopes
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scope)}&access_type=offline&prompt=consent&include_granted_scopes=true&state=${localPort}_${service}`;
+  
   res.redirect(authUrl);
 });
 
-app.get("/api/auth/gcal/callback", async (req, res) => {
+app.get("/api/auth/google/callback", async (req, res) => {
   const { code, state } = req.query;
-  const localPort = state;
+  const [localPort, service] = (state || "").split("_");
 
   if (!code || !localPort) {
     return res.status(400).send("Missing code or state parameter");
   }
 
   try {
-    const redirectUri = "https://meetclare.vercel.app/api/auth/gcal/callback";
+    const redirectUri = "https://meetclare.vercel.app/api/auth/google/callback";
     const response = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
       headers: {
@@ -159,8 +172,11 @@ app.get("/api/auth/gcal/callback", async (req, res) => {
       return res.status(500).send(`Google OAuth failed: ${data.error_description || data.error}`);
     }
 
-    const refreshToken = data.refresh_token;
-    res.redirect(`http://localhost:${localPort}/auth/gcal/callback?token=${refreshToken}`);
+    const refreshToken = data.refresh_token || "";
+    const accessToken = data.access_token || "";
+    const expiresIn = data.expires_in || 3599;
+
+    res.redirect(`http://localhost:${localPort}/auth/google/callback?refresh_token=${refreshToken}&access_token=${accessToken}&expires_in=${expiresIn}&service=${service || 'gcal'}`);
   } catch (error) {
     console.error("Error during Google callback:", error);
     res.status(500).send("Internal server error during Google callback");
