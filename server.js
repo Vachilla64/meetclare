@@ -125,18 +125,20 @@ app.get("/api/auth/google", (req, res) => {
     return res.status(400).send("Missing localPort parameter");
   }
 
-  const scopeMap = {
-    gcal: "https://www.googleapis.com/auth/calendar",
-    gmail: "https://www.googleapis.com/auth/gmail.modify",
-    drive: "https://www.googleapis.com/auth/drive",
-    sheets: "https://www.googleapis.com/auth/spreadsheets"
-  };
+  const WORKSPACE_MCP_SCOPES = [
+    "https://www.googleapis.com/auth/calendar",
+    "https://www.googleapis.com/auth/calendar.events",
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.send",
+    "https://www.googleapis.com/auth/gmail.modify",
+    "https://www.googleapis.com/auth/drive",
+    "https://www.googleapis.com/auth/drive.readonly"
+  ].join(" ");
 
-  const scope = scopeMap[service] || scopeMap.gcal;
   const redirectUri = "https://meetclare.vercel.app/api/auth/google/callback";
   
-  // include_granted_scopes=true ensures incremental authorization retains previous scopes
-  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scope)}&access_type=offline&prompt=consent&include_granted_scopes=true&state=${localPort}_${service}`;
+  // prompt=consent ensures a refresh token is generated with all these scopes
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(WORKSPACE_MCP_SCOPES)}&access_type=offline&prompt=consent&state=${localPort}_${service}`;
   
   res.redirect(authUrl);
 });
